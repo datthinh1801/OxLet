@@ -1,4 +1,11 @@
-# Oxford-API
+# Oxford API
+<p align="center">
+  <img height=150 width=150 src="https://www.oxfordlearnersdictionaries.com/us/external/images/home_2020/OLD_home_productsOALD.png?version=2.1.31">
+</p>  
+<p align="center">
+  <img src="https://github.com/datthinh1801/Oxford-API/actions/workflows/dependencies.yml/badge.svg">
+</p>  
+
 ## Installation guide
 ### Step 1: Download Python 3
 Go to the [download](https://www.python.org/downloads/) page of Python and download the latest version of Python 3 of your operating system. Then follow the instruction of the installation setup wizard to install Python 3 for your computer.  
