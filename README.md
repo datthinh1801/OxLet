@@ -2,16 +2,21 @@
 ## Installation guide
 Go to the [download](https://www.python.org/downloads/) page of Python and download the latest version of Python 3 of your operating system.  
 
-Then, execute the following commands, one-by-one, to install:  
+Then, execute the following command to download this tool.   
 ```
 git clone https://github.com/datthinh1801/Oxford-API.git
+```  
+
+A preferred way to download this tool is to go to the [release](https://github.com/datthinh1801/Oxford-API/releases) tab of this repository and download the latest version.
+> `zip` file will be supported on multiple platforms, whereas `tar.gz` works best on Unix-based OS only (e.g. MacOS, Linux, Ubuntu, etx.).  
+
+Then install the requirements.  
+```
 cd Oxford-API
 pip install -r requirements.txt
 ```  
 
-Another option is to go to the [release](https://github.com/datthinh1801/Oxford-API/releases) tab of this repository and download the latest version.
-> `zip` file will be supported on multiple platforms, whereas `tar.gz` works best on Unix-based OS only (e.g. MacOS, Linux, Ubuntu, etx.).  
-
+You are ready to go.
 
 ## Usage
 ```
