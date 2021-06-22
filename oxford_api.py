@@ -1,7 +1,7 @@
-from pprint import pprint
 import requests
 import json
 import argparse
+import progressbar
 
 # Create a parser
 parser = argparse.ArgumentParser()
@@ -54,67 +54,71 @@ language = "en-gb"
 
 
 with open(args.outfile, "w") as f:
-    for word in words:
-        print(f"Looking up {word}...")
-        # acquire data from oxford
-        url = (
-            "https://od-api.oxforddictionaries.com/api/v2/entries/"
-            + language
-            + "/"
-            + word.lower()
-        )
+    from alive_progress import alive_bar
 
-        r = requests.get(url, headers=dict(app_id=app_id, app_key=app_key))
+    with alive_bar(len(words), title="Looking up") as bar:
+        for word in words:
+            print(f"{word}...")
+            bar()
+            # acquire data from oxford
+            url = (
+                "https://od-api.oxforddictionaries.com/api/v2/entries/"
+                + language
+                + "/"
+                + word.lower()
+            )
 
-        # Extract the first result
-        try:
-            result = r.json()["results"][0]
-        except:
-            print("Failed to acquire result. Discard this word.")
-            continue
+            r = requests.get(url, headers=dict(app_id=app_id, app_key=app_key))
 
-        # Extract word id
-        try:
-            word_id = result["id"]
-        except:
-            print("Failed to acquire word_id. Discard this word.")
-            continue
+            # Extract the first result
+            try:
+                result = r.json()["results"][0]
+            except:
+                print("Failed to acquire result. Discard this word.")
+                continue
 
-        # Extract the first lexical entry
-        try:
-            lexical_entry = result["lexicalEntries"][0]["entries"][0]
-        except:
-            print("Failed to acquire lexical_entry. Discard this word.")
-            continue
+            # Extract word id
+            try:
+                word_id = result["id"]
+            except:
+                print("Failed to acquire word_id. Discard this word.")
+                continue
 
-        # Extract the word form
-        try:
-            word_form = ""
-            word_form = f"({result['lexicalEntries'][0]['lexicalCategory']['id']})"
-        except:
-            print("Failed to acquire word form.")
+            # Extract the first lexical entry
+            try:
+                lexical_entry = result["lexicalEntries"][0]["entries"][0]
+            except:
+                print("Failed to acquire lexical_entry. Discard this word.")
+                continue
 
-        # Extract the first definition
-        try:
-            definition = lexical_entry["senses"][0]["definitions"][0]
-        except:
-            print("Failed to acquire definition. Discard this word.")
-            continue
+            # Extract the word form
+            try:
+                word_form = ""
+                word_form = f"({result['lexicalEntries'][0]['lexicalCategory']['id']})"
+            except:
+                print("Failed to acquire word form.")
 
-        # Extract the first example
-        try:
-            example = ""
-            example = "e.g. " + lexical_entry["senses"][0]["examples"][0]["text"]
-        except:
-            print("Failed to acquire example.")
+            # Extract the first definition
+            try:
+                definition = lexical_entry["senses"][0]["definitions"][0]
+            except:
+                print("Failed to acquire definition. Discard this word.")
+                continue
 
-        # write result to file
-        try:
-            string_to_write = f"{word_id}|{word_form} {definition}\n{example}"
-            f.write(string_to_write)
-            f.write("\n")
-            f.write("\n")
-        except:
-            print("Failed to write the result to file!")
-            continue
-        print("Succeeded!")
+            # Extract the first example
+            try:
+                example = ""
+                example = "e.g. " + lexical_entry["senses"][0]["examples"][0]["text"]
+            except:
+                print("Failed to acquire example.")
+
+            # write result to file
+            try:
+                string_to_write = f"{word_id}|{word_form} {definition}\n{example}"
+                f.write(string_to_write)
+                f.write("\n")
+                f.write("\n")
+            except:
+                print("Failed to write the result to file!")
+                continue
+            print("Succeeded!")
