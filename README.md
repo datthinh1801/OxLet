@@ -1,4 +1,6 @@
-# Oxford API
+# OxLet
+A tool to generate a vocabulary list to create a Quizlet study set, using Oxford API.  
+
 <p align="center">
   <img height=150 width=150 src="https://www.oxfordlearnersdictionaries.com/us/external/images/home_2020/OLD_home_productsOALD.png?version=2.1.31">
 </p>  
