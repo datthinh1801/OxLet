@@ -80,15 +80,16 @@ with open(args.outfile, 'w') as f:
 
         # Extract the first example
         try:
-            example = lexical_entry['senses'][0]['examples'][0]['text']
+            example = "e.g. " + lexical_entry['senses'][0]['examples'][0]['text']
         except:
             print("Failed on acquiring example.")
             continue
 
         # write result to file
         try:
-            string_to_write = f"{word_id}|{definition}\\{example}"
+            string_to_write = f"{word_id}|{definition}\n{example}"
             f.write(string_to_write)
+            f.write('\n')
             f.write('\n')
         except:
             print("Failed!")
