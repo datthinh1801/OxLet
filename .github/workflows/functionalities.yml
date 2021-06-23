@@ -5,9 +5,13 @@ name: Functionalities
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ main ]
+    paths:
+      - '*.py'
   pull_request:
     branches: [ main ]
+    paths:
+      - '*.py'
 
 jobs:
   build:
