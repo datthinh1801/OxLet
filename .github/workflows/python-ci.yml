@@ -25,9 +25,10 @@ jobs:
   
       - name: Install dependencies
         run: |
+          python3 -m pip install --upgrade pip
           pip install -r requirements.txt
           
       - name: Test functionalities
-        run: python3 ./oxlet.py -w "sustainable" -o outfile.txt
+        run: python3 ./oxlet.py -w "sustainable" -o ./outfile.txt
   
 
