@@ -17,6 +17,8 @@ Go to the [download](https://www.python.org/downloads/) page of Python and downl
 ### Step 2: Download this tool
 Go to the [release tab](https://github.com/datthinh1801/Oxford-API/releases) ***(👈 click this)*** and click the icon ![image](https://user-images.githubusercontent.com/44528004/123025868-836fcf80-d405-11eb-9c6b-15c390b8cfb6.png) of the latest version to download the compressed file of this tool.  
 
+Then, you need to decompress (or extract) the downloaded file before moving on to **step 3**.  
+
 ### Step 3: Install dependencies
 After downloading the tool, follows this instruction to install it.
 #### Windows
