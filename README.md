@@ -89,7 +89,7 @@ python3 oxlet.py -f input.txt -o output.txt
 
 > You don't need to create the `output.txt` file beforehand. This tool will do it for you.
 
-### Read new words directly on console
+### Read new words directly
 Windows:
 ```
 py oxlet.py -w "inquire, insist, straightforward, sort out" -o output.txt
