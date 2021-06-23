@@ -1,7 +1,6 @@
 import requests
 import json
 import argparse
-import progressbar
 
 # Create a parser
 parser = argparse.ArgumentParser()
