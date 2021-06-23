@@ -123,7 +123,7 @@ This demo reads new words from a file but you can feed new words to the tool dir
 
 #### MacOS
 ![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_mac.gif)  
-> **Note that:** You only need to run the `pip install -r requirements.txt` at the first time you download the tool. In following times, you just need to run the `python3 oxlet.py 
+> **Note that:** You only need to run the `pip install -r requirements.txt` at the first time you download the tool.  
 
 ## Currently supported elements
 | Element | Is supported ? |
