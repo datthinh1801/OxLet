@@ -148,5 +148,9 @@ This tool uses `|` as the separator between the terminology and the definition, 
   
 - Finally, copy the whole contents of the `output.txt` to the textbox in Quizlet and you are done!  
 
+As an example, Quizlet perfectly understand the format of this tool.  
+![image](https://user-images.githubusercontent.com/44528004/123089609-5d701c80-d451-11eb-9f3f-262ed617707e.png)
+
+
 #### Happy learning 🎉
 
