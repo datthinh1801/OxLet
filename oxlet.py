@@ -55,7 +55,7 @@ language = "en-gb"
 with open(args.outfile, "w") as f:
     from alive_progress import alive_bar
 
-    with alive_bar(len(words), title="Looking up") as bar:
+    with alive_bar(len(words), title="Looking up", bar='classic') as bar:
         for word in words:
             print(f"{word}...")
             bar()
