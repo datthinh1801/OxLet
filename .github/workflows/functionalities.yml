@@ -34,7 +34,7 @@ jobs:
       if: ${{ runner.os == 'Windows' }}
       run: |
         python3 -m venv env
-        .\env\Scripts\activate
+        .\env\Scripts\Activate.ps1
         
         
     - name: Install dependencies
