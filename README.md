@@ -40,8 +40,8 @@ optional arguments:
 | Parameter | Meaning |
 |---|---|
 | `-w` | A list of words that you want to look up. These words shoud be separated by commas or a comma followed by a space and enclosed in a pair of quotes _(either single quotes `' '` or double quotes `" "` are ok)_. |
-| `-f` | Specify the name of input file containing your new words *(e.g. `input.txt`, `my_words.txt`, etc.)*. |
-| `-o` | Specify the name of the output file *(e.g. `output.txt`, `words.txt`, etc.)*. |  
+| `-f` | Specify the name of the input file containing your new words. |
+| `-o` | Specify the name of the output file. |  
 
 > **Note that:** `-o` is required while only one of the `-w` and the `-f` should be selected at a time.   
 
@@ -108,6 +108,11 @@ sort_out|(verb) arrange things systematically in groups or according to type
 e.g. she sorted out the clothes, some to be kept, some to be thrown away
 
 ```  
+
+### Demo
+#### Windows
+This demo reads new words from a file but you can feed new words to the tool directly using the `-w` followed by a doubly-quoted string of your new words like the above example.  
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_win10.gif)
 
 ## Currently supported elements
 | Element | Is supported ? |
