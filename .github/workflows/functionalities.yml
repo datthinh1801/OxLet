@@ -24,6 +24,19 @@ jobs:
       with:
         python-version: 3.9
   
+    - name: Install virtual environment (Linux & MacOS)
+      if: ${{ runner.os != 'Windows' }}
+      run: |
+        python3 -m venv env
+        source ./env/bin/activate
+        
+    - name: Install virtual environment (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      run: |
+        python3 -m venv env
+        ./env/Scripts/activate
+        
+        
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
