@@ -119,7 +119,7 @@ e.g. she sorted out the clothes, some to be kept, some to be thrown away
 ### Demo
 This demo reads new words from a file but you can feed new words to the tool directly using the `-w` followed by a doubly-quoted string of your new words like the above example.  
 #### Windows
-![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_win10.gif)  
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Win_demo.gif)  
 
 #### MacOS
 ![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_mac.gif)  
@@ -130,12 +130,12 @@ This demo reads new words from a file but you can feed new words to the tool dir
 |---|---|
 | Terminology | Yes |
 | Pronunciation | No |
-| Word form | Yes *(to some extent, as idioms and phrasal verbs are still not supported)* |
+| Word form | Yes *(to some extent, as idioms and phrasal verbs are yet supported)* |
 | Definition | Yes |
 | Example | Yes |  
 
 ## Integrate to Quizlet
-This tool uses `|` as the separator between the terminology and the definition, `n\n` (a blank line) between 2 different words. Therefore, if you are about to use this output file for [Quizlet](https://quizlet.com/latest), you should do as the followings:
+This tool uses `|` as the separator between the terminology and the definition, `\n\n` (a blank line) between 2 different words. Therefore, if you are about to use this output file for [Quizlet](https://quizlet.com/latest), you should do as the followings:
 - Create a new study set (or add to an existing one).  
   ![image](https://user-images.githubusercontent.com/44528004/122899307-e9ad1180-d375-11eb-91d4-45d6b24cd6ec.png)  
 
