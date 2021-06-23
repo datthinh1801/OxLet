@@ -1,6 +1,7 @@
 import requests
 import json
 import argparse
+from alive_progress import alive_bar
 
 # Create a parser
 parser = argparse.ArgumentParser()
@@ -31,6 +32,7 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+# Get words
 if args.infile:
     with open(args.infile, "r") as f:
         words = list(map(str.strip, f.readlines()))
@@ -53,9 +55,7 @@ language = "en-gb"
 
 
 with open(args.outfile, "w") as f:
-    from alive_progress import alive_bar
-
-    with alive_bar(len(words), title="Looking up", bar='classic') as bar:
+    with alive_bar(len(words), title="Looking up") as bar:
         for word in words:
             print(f"{word}...")
             bar()
@@ -107,7 +107,8 @@ with open(args.outfile, "w") as f:
             # Extract the first example
             try:
                 example = ""
-                example = "e.g. " + lexical_entry["senses"][0]["examples"][0]["text"]
+                example = "e.g. " + \
+                    lexical_entry["senses"][0]["examples"][0]["text"]
             except:
                 print("Failed to acquire example.")
 
