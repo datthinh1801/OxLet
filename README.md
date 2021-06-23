@@ -1,5 +1,5 @@
 # OxLet
-A tool to generate a vocabulary list to create a Quizlet study set, using Oxford API.  
+A tool to generate a vocabulary list which eases the process of creating a Quizlet study set, using Oxford API.  
 
 <p align="center">
   <img height=150 width=150 src="https://www.oxfordlearnersdictionaries.com/us/external/images/home_2020/OLD_home_productsOALD.png?version=2.1.31">
@@ -11,33 +11,16 @@ A tool to generate a vocabulary list to create a Quizlet study set, using Oxford
 
 ## Installation guide
 ### Step 1: Download Python 3
-Go to the [download](https://www.python.org/downloads/) page of Python and download the latest version of Python 3 of your operating system. Then follow the instruction of the installation setup wizard to install Python 3 for your computer.  
+Go to the [download](https://www.python.org/downloads/) page of Python and download the latest version of Python 3 for your operating system. Then follow the instruction of the installation wizard to install Python 3 for your computer.  
+> Note that there are 2 major versions which are **Python 2** and **Python 3**. Make sure you select **Python 3** and download it.
 
 ### Step 2: Download this tool
-Then, open your terminal (or command prompt in Windows 10) and execute the following command to download this tool.   
-```
-git clone https://github.com/datthinh1801/Oxford-API.git
-```  
+Go to the [release tab](https://github.com/datthinh1801/Oxford-API/releases) ***(👈 click this)*** and click the icon ![image](https://user-images.githubusercontent.com/44528004/123025868-836fcf80-d405-11eb-9c6b-15c390b8cfb6.png) of the latest version to download the compressed file of this tool.  
 
-A preferred way to download this tool is to go to the [release tab](https://github.com/datthinh1801/Oxford-API/releases) ***(👈 click the link)*** of this repository and download the latest version.
-> `zip` file will be supported on multiple platforms, whereas `tar.gz` works best on Unix-based OS only (e.g. MacOS, Linux, Ubuntu, etc.).  
-
-***If you download the tool from the **Release** tab, you should extract it before moving on to the next steps.***
-
-### Step 3: Install prerequisites
-On your terminal, execute the following commands to install the prerequisites:  
-```
-cd Oxford-API
-pip install -r requirements.txt
-```  
-
-If you're not familiar with terminal and don't know how to `cd`, do the followings:
-- Open the directory **Oxford-API**.  
-- Right click on a space within the directory.  
-- Select **Open with terminal** or something like that.  
-- Execute the command `pip install -r requirements.txt` on the terminal.
-
-Now, you are ready to go.
+### Step 3: Install dependencies
+After downloading the tool, follows this instruction to install it.
+#### Windows
+![](https://github.com/datthinh1801/OxLet/blob/main/media/win10_install.gif)
 
 ## Usage
 ```
@@ -60,9 +43,7 @@ optional arguments:
 | `-f` | Specify the name of input file containing your new words *(e.g. `input.txt`, `my_words.txt`, etc.)*. |
 | `-o` | Specify the name of the output file *(e.g. `output.txt`, `words.txt`, etc.)*. |  
 
-> **Note that:** `-o` is required while only one of the `-w` and the `-f` should be selected at a time.  
-
-> **For non-tech user:** In order to create a vocabulary list from a file, you need to copy that file into the same directory (folder) of this tool.  
+> **Note that:** `-o` is required while only one of the `-w` and the `-f` should be selected at a time.   
 
 ### Format of the input file (if used)
 #### File extension
