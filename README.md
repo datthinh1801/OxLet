@@ -46,7 +46,7 @@ optional arguments:
 ### Parameters explaination
 | Parameter | Meaning |
 |---|---|
-| `-w` | A list of words that you want to look up. These words shoud be separated by commas or a comma followed by a space and enclosed in a pair of quotes _(either single quotes `' '` or double quotes `" "` are ok)_. |
+| `-w` | A list of words that you want to look up. Every 2 words shoud be separated by a comma or a comma followed by a space and all word must be enclosed in a pair of quotes _(either single quotes `' '` or double quotes `" "` are ok)_. |
 | `-f` | Specify the name of the input file containing your new words. |
 | `-o` | Specify the name of the output file. |  
 
@@ -56,7 +56,7 @@ optional arguments:
 #### File extension
 The input file should be a text file (`.txt`) for the best performance.  
 #### File format
-The format of the contents of the input file should be **one word/phrase per line**, and no separators such as `,` or `.` is required.  
+The format of the contents of the input file should be **one word per line** or **one phrase per line**, and no separators such as `,` or `.` is required.  
 
 For example:  
 ```
@@ -82,7 +82,7 @@ Windows:
 py oxlet.py -f input.txt -o output.txt
 ```  
 
-Linux:
+Linux/MacOS:
 ```
 python3 oxlet.py -f input.txt -o output.txt
 ```  
@@ -95,7 +95,7 @@ Windows:
 py oxlet.py -w "inquire, insist, straightforward, sort out" -o output.txt
 ```
 
-Linux:
+Linux/MacOS:
 ```
 python3 oxlet.py -w "inquire, insist, straightforward, sort out" -o output.txt
 ```  
