@@ -110,9 +110,12 @@ e.g. she sorted out the clothes, some to be kept, some to be thrown away
 ```  
 
 ### Demo
-#### Windows
 This demo reads new words from a file but you can feed new words to the tool directly using the `-w` followed by a doubly-quoted string of your new words like the above example.  
-![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_win10.gif)
+#### Windows
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_win10.gif)  
+
+#### MacOS
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_mac.gif)
 
 ## Currently supported elements
 | Element | Is supported ? |
