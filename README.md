@@ -20,11 +20,14 @@ Go to the [release tab](https://github.com/datthinh1801/Oxford-API/releases) ***
 ### Step 3: Install dependencies
 After downloading the tool, follows this instruction to install it.
 #### Windows
-![](https://github.com/datthinh1801/OxLet/blob/main/media/win10_install.gif)
+![](https://github.com/datthinh1801/OxLet/blob/main/media/win10_install.gif)  
+
+#### MacOS
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Mac_installation.gif)
 
 ## Usage
 ```
-usage: oxford_api.py [-h] [-w [WORDS]] [-f [INFILE]] [-o [OUTFILE]]
+usage: oxlet.py [-h] [-w [WORDS]] [-f [INFILE]] [-o [OUTFILE]]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -72,12 +75,12 @@ sort out
 I want the results to be written to another file called `output.txt` which resides in the same directory of this tool. The command will be:  
 Windows:
 ```
-py oxford_api.py -f input.txt -o output.txt
+py oxlet.py -f input.txt -o output.txt
 ```  
 
 Linux:
 ```
-python3 oxford_api.py -f input.txt -o output.txt
+python3 oxlet.py -f input.txt -o output.txt
 ```  
 
 > You don't need to create the `output.txt` file beforehand. This tool will do it for you.
@@ -85,12 +88,12 @@ python3 oxford_api.py -f input.txt -o output.txt
 ### Read new words directly on console
 Windows:
 ```
-py oxford_api.py -w "inquire, insist, straightforward, sort out" -o output.txt
+py oxlet.py -w "inquire, insist, straightforward, sort out" -o output.txt
 ```
 
 Linux:
 ```
-python3 oxford_api.py -w "inquire, insist, straightforward, sort out" -o output.txt
+python3 oxlet.py -w "inquire, insist, straightforward, sort out" -o output.txt
 ```  
 
 The output file will be:
@@ -115,7 +118,8 @@ This demo reads new words from a file but you can feed new words to the tool dir
 ![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_win10.gif)  
 
 #### MacOS
-![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_mac.gif)
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_mac.gif)  
+> **Note that:** You only need to run the `pip install -r requirements.txt` at the first time you download the tool. In following times, you just need to run the `python3 oxlet.py 
 
 ## Currently supported elements
 | Element | Is supported ? |
