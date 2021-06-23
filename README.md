@@ -25,7 +25,9 @@ After downloading the tool, follows this instruction to install it.
 ![](https://github.com/datthinh1801/OxLet/blob/main/media/win10_install.gif)  
 
 #### MacOS
-![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Mac_installation.gif)
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Mac_installation.gif)  
+
+> Now you're ready to use.
 
 ## Usage
 ```
