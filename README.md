@@ -6,7 +6,7 @@ A tool to generate a vocabulary list to create a Quizlet study set, using Oxford
 </p>  
 <p align="center">
   <img src="https://github.com/datthinh1801/Oxford-API/actions/workflows/dependencies.yml/badge.svg">
-  <img src="https://github.com/datthinh1801/OxLet/actions/workflows/python-ci.yml/badge.svg">
+  <img src="https://github.com/datthinh1801/OxLet/actions/workflows/functionalities.yml/badge.svg">
 </p>  
 
 ## Installation guide
