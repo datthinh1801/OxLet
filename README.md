@@ -9,6 +9,9 @@ A tool to generate a vocabulary list which eases the process of creating a Quizl
   <img src="https://github.com/datthinh1801/OxLet/actions/workflows/functionalities.yml/badge.svg">
 </p>  
 
+## Acknowledgement
+Thanks [Ky Luong](https://github.com/luong07734) for helping me to test and demo this tool on MacOS.  
+
 ## Installation guide
 ### Step 1: Download Python 3
 Go to the [download](https://www.python.org/downloads/) page of Python and download the latest version of Python 3 for your operating system. Then follow the instruction of the installation wizard to install Python 3 for your computer.  
