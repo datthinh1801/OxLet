@@ -10,7 +10,7 @@ A tool to generate a vocabulary list which eases the process of creating a Quizl
 </p>  
 
 ## Acknowledgement
-Thanks [Ky Luong](https://github.com/luong07734) for helping me to test and demo this tool on MacOS.  
+Thanks [@luong07734](https://github.com/luong07734) for helping me to test and demo this tool on MacOS.  
 
 ## Installation guide
 ### Step 1: Download Python 3
