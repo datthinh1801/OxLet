@@ -9,6 +9,9 @@ A tool to generate a vocabulary list which eases the process of creating a Quizl
   <img src="https://github.com/datthinh1801/OxLet/actions/workflows/functionalities.yml/badge.svg">
 </p>  
 
+## Acknowledgement
+Thanks [@luong07734](https://github.com/luong07734) for helping me to test and demo this tool on MacOS.  
+
 ## Installation guide
 ### Step 1: Download Python 3
 Go to the [download](https://www.python.org/downloads/) page of Python and download the latest version of Python 3 for your operating system. Then follow the instruction of the installation wizard to install Python 3 for your computer.  
@@ -17,14 +20,21 @@ Go to the [download](https://www.python.org/downloads/) page of Python and downl
 ### Step 2: Download this tool
 Go to the [release tab](https://github.com/datthinh1801/Oxford-API/releases) ***(👈 click this)*** and click the icon ![image](https://user-images.githubusercontent.com/44528004/123025868-836fcf80-d405-11eb-9c6b-15c390b8cfb6.png) of the latest version to download the compressed file of this tool.  
 
+Then, you need to decompress (or extract) the downloaded file before moving on to **step 3**.  
+
 ### Step 3: Install dependencies
 After downloading the tool, follows this instruction to install it.
 #### Windows
-![](https://github.com/datthinh1801/OxLet/blob/main/media/win10_install.gif)
+![](https://github.com/datthinh1801/OxLet/blob/main/media/win10_install.gif)  
+
+#### MacOS
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Mac_installation.gif)  
+
+> Now you're ready to use.
 
 ## Usage
 ```
-usage: oxford_api.py [-h] [-w [WORDS]] [-f [INFILE]] [-o [OUTFILE]]
+usage: oxlet.py [-h] [-w [WORDS]] [-f [INFILE]] [-o [OUTFILE]]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -39,7 +49,7 @@ optional arguments:
 ### Parameters explaination
 | Parameter | Meaning |
 |---|---|
-| `-w` | A list of words that you want to look up. These words shoud be separated by commas or a comma followed by a space and enclosed in a pair of quotes _(either single quotes `' '` or double quotes `" "` are ok)_. |
+| `-w` | A list of words that you want to look up. Every 2 words shoud be separated by a comma or a comma followed by a space and all word must be enclosed in a pair of quotes _(either single quotes `' '` or double quotes `" "` are ok)_. |
 | `-f` | Specify the name of the input file containing your new words. |
 | `-o` | Specify the name of the output file. |  
 
@@ -49,7 +59,7 @@ optional arguments:
 #### File extension
 The input file should be a text file (`.txt`) for the best performance.  
 #### File format
-The format of the contents of the input file should be **one word/phrase per line**, and no separators such as `,` or `.` is required.  
+The format of the contents of the input file should be **one word per line** or **one phrase per line**, and no separators such as `,` or `.` is required.  
 
 For example:  
 ```
@@ -72,25 +82,25 @@ sort out
 I want the results to be written to another file called `output.txt` which resides in the same directory of this tool. The command will be:  
 Windows:
 ```
-py oxford_api.py -f input.txt -o output.txt
+py oxlet.py -f input.txt -o output.txt
 ```  
 
-Linux:
+Linux/MacOS:
 ```
-python3 oxford_api.py -f input.txt -o output.txt
+python3 oxlet.py -f input.txt -o output.txt
 ```  
 
 > You don't need to create the `output.txt` file beforehand. This tool will do it for you.
 
-### Read new words directly on console
+### Read new words directly
 Windows:
 ```
-py oxford_api.py -w "inquire, insist, straightforward, sort out" -o output.txt
+py oxlet.py -w "inquire, insist, straightforward, sort out" -o output.txt
 ```
 
-Linux:
+Linux/MacOS:
 ```
-python3 oxford_api.py -w "inquire, insist, straightforward, sort out" -o output.txt
+python3 oxlet.py -w "inquire, insist, straightforward, sort out" -o output.txt
 ```  
 
 The output file will be:
@@ -110,21 +120,25 @@ e.g. she sorted out the clothes, some to be kept, some to be thrown away
 ```  
 
 ### Demo
-#### Windows
 This demo reads new words from a file but you can feed new words to the tool directly using the `-w` followed by a doubly-quoted string of your new words like the above example.  
-![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_win10.gif)
+#### Windows
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Win_demo.gif)  
+
+#### MacOS
+![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Mac_demo.gif)  
+> **Note that:** Don't care about the `pip install -r requirements.txt` if you already run this command when installing the tool. 
 
 ## Currently supported elements
 | Element | Is supported ? |
 |---|---|
 | Terminology | Yes |
 | Pronunciation | No |
-| Word form | Yes *(to some extent, as idioms and phrasal verbs are still not supported)* |
+| Word form | Yes *(to some extent, as idioms and phrasal verbs are yet supported)* |
 | Definition | Yes |
 | Example | Yes |  
 
 ## Integrate to Quizlet
-This tool uses `|` as the separator between the terminology and the definition, `n\n` (a blank line) between 2 different words. Therefore, if you are about to use this output file for [Quizlet](https://quizlet.com/latest), you should do as the followings:
+This tool uses `|` as the separator between the terminology and the definition, `\n\n` (a blank line) between 2 different words. Therefore, if you are about to use this output file for [Quizlet](https://quizlet.com/latest), you should do as the followings:
 - Create a new study set (or add to an existing one).  
   ![image](https://user-images.githubusercontent.com/44528004/122899307-e9ad1180-d375-11eb-91d4-45d6b24cd6ec.png)  
 
@@ -136,6 +150,10 @@ This tool uses `|` as the separator between the terminology and the definition, 
   ![image](https://user-images.githubusercontent.com/44528004/122899600-28db6280-d376-11eb-94ca-53915302f08f.png)  
   
 - Finally, copy the whole contents of the `output.txt` to the textbox in Quizlet and you are done!  
+
+As an example, Quizlet perfectly understand the format of this tool.  
+![image](https://user-images.githubusercontent.com/44528004/123089609-5d701c80-d451-11eb-9f3f-262ed617707e.png)
+
 
 #### Happy learning 🎉
 
