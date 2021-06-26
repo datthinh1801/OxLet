@@ -74,6 +74,9 @@ with open(args.outfile, "w") as f:
                 result = r.json()["results"][0]
             except:
                 print("Failed to acquire result. Discard this word.")
+                f.write(word)
+                f.write("\n")
+                f.write("\n")
                 continue
 
             # Extract word id
@@ -81,6 +84,9 @@ with open(args.outfile, "w") as f:
                 word_id = result["id"]
             except:
                 print("Failed to acquire word_id. Discard this word.")
+                f.write(word)
+                f.write("\n")
+                f.write("\n")
                 continue
 
             # Extract the first lexical entry
@@ -88,6 +94,9 @@ with open(args.outfile, "w") as f:
                 lexical_entry = result["lexicalEntries"][0]["entries"][0]
             except:
                 print("Failed to acquire lexical_entry. Discard this word.")
+                f.write(word)
+                f.write("\n")
+                f.write("\n")
                 continue
 
             # Extract the word form
@@ -102,13 +111,15 @@ with open(args.outfile, "w") as f:
                 definition = lexical_entry["senses"][0]["definitions"][0]
             except:
                 print("Failed to acquire definition. Discard this word.")
+                f.write(word)
+                f.write("\n")
+                f.write("\n")
                 continue
 
             # Extract the first example
             try:
                 example = ""
-                example = "e.g. " + \
-                    lexical_entry["senses"][0]["examples"][0]["text"]
+                example = "e.g. " + lexical_entry["senses"][0]["examples"][0]["text"]
             except:
                 print("Failed to acquire example.")
 
