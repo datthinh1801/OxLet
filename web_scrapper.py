@@ -62,8 +62,41 @@ if __name__ == "__main__":
     words = preprocess_words(words)
     base_url = "https://www.oxfordlearnersdictionaries.com/definition/english/"
 
-    for word in words:
-        print(f"Processing {word}...")
-        page = check_output(f"curl -s {base_url + word}", shell=True)
-        soup = BeautifulSoup(page, "html.parser")
-        
+    # empty the outfile first
+    with open(args.outfile, "w") as f:
+        pass
+    with open(args.outfile, "ab") as outfile:
+        for word in words:
+            print(f"Processing {word}...")
+            page = check_output(f"curl -s -L {base_url + word}", shell=True)
+            soup = BeautifulSoup(page, "html.parser")
+            sense = soup.find(class_="sense")
+
+            result = ""
+
+            # extract headword
+            headword = soup.find(class_="headword")
+            result += headword.text + "\n"
+
+            try:
+                # extract phonetic
+                phon = soup.find(class_="phon")
+                result += f"({phon.text})" + "|"
+            except:
+                print("\tNo phonetic was found!")
+            # extract definition
+            definition = sense.find(class_="def")
+            result += definition.text + "\n"
+
+            try:
+                # extract example
+                example = sense.find(class_="examples").find_next("li")
+                result += "e.g. " + example.text
+            except:
+                print("\tNo example was found!")
+
+            # append delimiter between 2 words
+            result += "\n\n"
+
+            # append the result to file
+            outfile.write(result.encode())
