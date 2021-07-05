@@ -1,135 +1,102 @@
-import requests
-import json
+from subprocess import check_output
+from bs4 import BeautifulSoup
 import argparse
-from alive_progress import alive_bar
 
-# Create a parser
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "-w",
-    "--words",
-    nargs="?",
-    help="a list of words/phrases separated by commas (e.g. sustainable, take a toll)",
-    type=str,
-    dest="words",
-)
-parser.add_argument(
-    "-f",
-    "--file",
-    nargs="?",
-    help="the name of the file to read from (e.g. newwords.txt)",
-    type=str,
-    dest="infile",
-)
-parser.add_argument(
-    "-o",
-    "--output",
-    nargs="?",
-    help="the filename to write the results to (e.g. output.txt)",
-    type=str,
-    dest="outfile",
-)
 
-args = parser.parse_args()
-
-# Get words
-if args.infile:
-    with open(args.infile, "r") as f:
-        words = list(map(str.strip, f.readlines()))
-elif args.words:
-    words = list(map(str.strip, args.words.split(",")))
-else:
-    import sys
-    import os
-
-    print(
-        "Invalid arguments. Please run the following command for a how-to instruction."
+def create_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-w",
+        "--words",
+        nargs="?",
+        help="a list of words/phrases separated by commas (e.g. sustainable, take a toll)",
+        type=str,
+        dest="words",
     )
-    print(f"python3 {os.path.basename(__file__)} -h")
-    sys.exit(1)
+    parser.add_argument(
+        "-f",
+        "--file",
+        nargs="?",
+        help="the name of the file to read from (e.g. newwords.txt)",
+        type=str,
+        dest="infile",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        nargs="?",
+        help="the filename to write the results to (e.g. output.txt)",
+        type=str,
+        dest="outfile",
+    )
 
-# API setup
-app_id = "6c4b0aaa"
-app_key = "55a83148c8ad92dd31e3c312d845bb9a"
-language = "en-gb"
+    return parser.parse_args()
 
 
-with open(args.outfile, "w") as f:
-    with alive_bar(len(words), title="Looking up", bar="classic") as bar:
+def get_word_list(args) -> list:
+    if args.infile:
+        with open(args.infile, "r") as f:
+            words = list(map(str.strip, f.readlines()))
+    elif args.words:
+        words = list(map(str.strip, args.words.split(",")))
+    else:
+        import sys
+        import os
+
+        print(
+            "Invalid arguments. Please run the following command for a how-to instruction."
+        )
+        print(f"python3 {os.path.basename(__file__)} -h")
+        sys.exit(1)
+
+    return words
+
+
+def preprocess_words(words):
+    return list(map(lambda word: "-".join(word.split(" ")), words))
+
+
+if __name__ == "__main__":
+    args = create_parser()
+    words = get_word_list(args)
+    words = preprocess_words(words)
+    base_url = "https://www.oxfordlearnersdictionaries.com/definition/english/"
+
+    # empty the outfile first
+    with open(args.outfile, "w") as f:
+        pass
+    with open(args.outfile, "ab") as outfile:
         for word in words:
-            print(f"{word}...")
-            bar()
-            # acquire data from oxford
-            url = (
-                "https://od-api.oxforddictionaries.com/api/v2/entries/"
-                + language
-                + "/"
-                + word.lower()
-            )
+            print(f"Processing {word}...")
+            page = check_output(f"curl -s -L {base_url + word}", shell=True)
+            soup = BeautifulSoup(page, "html.parser")
+            sense = soup.find(class_="sense")
 
-            r = requests.get(url, headers=dict(app_id=app_id, app_key=app_key))
+            result = ""
 
-            # Extract the first result
+            # extract headword
+            headword = soup.find(class_="headword")
+            result += headword.text + "\n"
+
             try:
-                result = r.json()["results"][0]
+                # extract phonetic
+                phon = soup.find(class_="phon")
+                result += f"({phon.text})" + "|"
             except:
-                print("Failed to acquire result. Discard this word.")
-                f.write(word)
-                f.write("\n")
-                f.write("\n")
-                continue
+                print("\tNo phonetic was found!")
+            # extract definition
+            definition = sense.find(class_="def")
+            result += definition.text + "\n"
 
-            # Extract word id
             try:
-                word_id = result["id"]
+                # extract example
+                example = sense.find(class_="examples").find_next("li")
+                result += "e.g. " + example.text
             except:
-                print("Failed to acquire word_id. Discard this word.")
-                f.write(word)
-                f.write("\n")
-                f.write("\n")
-                continue
+                print("\tNo example was found!")
 
-            # Extract the first lexical entry
-            try:
-                lexical_entry = result["lexicalEntries"][0]["entries"][0]
-            except:
-                print("Failed to acquire lexical_entry. Discard this word.")
-                f.write(word)
-                f.write("\n")
-                f.write("\n")
-                continue
+            # append delimiter between 2 words
+            result += "\n\n"
 
-            # Extract the word form
-            try:
-                word_form = ""
-                word_form = f"({result['lexicalEntries'][0]['lexicalCategory']['id']})"
-            except:
-                print("Failed to acquire word form.")
-
-            # Extract the first definition
-            try:
-                definition = lexical_entry["senses"][0]["definitions"][0]
-            except:
-                print("Failed to acquire definition. Discard this word.")
-                f.write(word)
-                f.write("\n")
-                f.write("\n")
-                continue
-
-            # Extract the first example
-            try:
-                example = ""
-                example = "e.g. " + lexical_entry["senses"][0]["examples"][0]["text"]
-            except:
-                print("Failed to acquire example.")
-
-            # write result to file
-            try:
-                string_to_write = f"{word_id}|{word_form} {definition}\n{example}"
-                f.write(string_to_write)
-                f.write("\n")
-                f.write("\n")
-            except:
-                print("Failed to write the result to file!")
-                continue
-            print("Succeeded!")
+            # append the result to file
+            outfile.write(result.encode())
