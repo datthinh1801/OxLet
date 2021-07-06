@@ -34,6 +34,9 @@ jobs:
         pip install -r requirements.txt
           
     - name: Test functionalities
-      run: python3 ./oxlet.py -w "sustainable" -o ./outfile.txt
+      run: |
+        python3 ./oxlet.py -w "sustainable" -o ./outfile.txt
+        echo sustainable > infile.txt
+        python3 ./oxlet.py -f ./infile.txt -o ./outfile.txt
   
 
