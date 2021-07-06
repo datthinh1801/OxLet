@@ -75,15 +75,30 @@ if __name__ == "__main__":
             result = ""
 
             # extract headword
-            headword = soup.find(class_="headword")
-            result += headword.text + "\n"
+            try:
+                headword = soup.find(class_="headword")
+                result += headword.text
+            except:
+                print("\tNo headword was found! Skip this word...")
+                outfile.write(f"{word}\n\n".encode())
+                continue
 
             try:
                 # extract phonetic
                 phon = soup.find(class_="phon")
-                result += f"({phon.text})" + "|"
+                result += f"\n({phon.text})"
             except:
                 print("\tNo phonetic was found!")
+
+            result += "|"
+
+            # extract word form
+            try:
+                word_form = soup.find(class_="pos")
+                result += f"({word_form.text}) "
+            except:
+                print("\tNo word form was found!")
+
             # extract definition
             definition = sense.find(class_="def")
             result += definition.text + "\n"
