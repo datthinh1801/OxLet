@@ -13,13 +13,10 @@ def preprocess_words(words):
 
 
 def crawl_resource(word) -> str:
-    try:
-        # page = check_output(f"curl -s -L {BASE_URL + word}", shell=True)
-        page = requests.get(BASE_URL + word, headers=HEADERS).text
-        soup = BeautifulSoup(page, "html.parser")
-        sense = soup.find(class_="sense")
-    except:
-        raise Exception("Potential command injection")
+    # page = check_output(f"curl -s -L {BASE_URL + word}", shell=True)
+    page = requests.get(BASE_URL + word, headers=HEADERS).text
+    soup = BeautifulSoup(page, "html.parser")
+    sense = soup.find(class_="sense")
 
     result = ""
 
