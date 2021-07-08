@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-
 from helper import preprocess_words, crawl_resource
 
 
