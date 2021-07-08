@@ -4,8 +4,14 @@
 <form method="POST" action="/">
     <div class="mb-3">
         <h4 for="new-words" class="form-label" style="margin-bottom: 10px;">Your new words</h4>
-        <textarea class="form-control" id="new-words" name="new-words" rows="10"></textarea>
+        <textarea class="form-control" id="new-words" name="new-words" rows="10">{{new_words}}</textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+<div class="mb-3" style="margin-top: 50px;">
+    <h4 for="result" class="form-label" style="margin-bottom: 10px;">Result</h4>
+    <textarea class="form-control" id="result" name="result" rows="10">{{result}}</textarea>
+</div>
+
 {% endblock %}
