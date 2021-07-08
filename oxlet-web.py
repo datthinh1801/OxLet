@@ -13,8 +13,14 @@ def index():
 
     new_words = request.form["new-words"]
     words = new_words.splitlines()
-    result = "".join(list(map(crawl_resource, words)))
-    return render_template("index.html", new_words=new_words, result=result)
+    words = preprocess_words(words)
+
+    # handle potential command injection
+    try:
+        result = "".join(list(map(crawl_resource, words)))
+        return render_template("index.html", new_words=new_words, result=result)
+    except:
+        return render_template("index.html")
 
 
 if __name__ == "__main__":

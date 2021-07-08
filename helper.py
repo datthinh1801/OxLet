@@ -10,9 +10,12 @@ def preprocess_words(words):
 
 
 def crawl_resource(word) -> str:
-    page = check_output(f"curl -s -L {BASE_URL + word}", shell=True)
-    soup = BeautifulSoup(page, "html.parser")
-    sense = soup.find(class_="sense")
+    try:
+        page = check_output(f"curl -s -L {BASE_URL + word}", shell=True)
+        soup = BeautifulSoup(page, "html.parser")
+        sense = soup.find(class_="sense")
+    except:
+        raise Exception("Potential command injection")
 
     result = ""
 
