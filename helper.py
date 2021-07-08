@@ -9,6 +9,7 @@ HEADERS.update({"User-Agent": "Edge"})
 
 
 def preprocess_words(words):
+    words = list(map(str.strip, words))
     return list(map(lambda word: "-".join(word.split(" ")), words))
 
 
