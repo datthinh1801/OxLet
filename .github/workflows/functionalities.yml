@@ -35,8 +35,8 @@ jobs:
           
     - name: Test functionalities
       run: |
-        python3 ./oxlet-cli.py -w "sustainable" -o ./outfile.txt
+        python3 ./oxlet_cli.py -w "sustainable" -o ./outfile.txt
         echo sustainable > infile.txt
-        python3 ./oxlet-cli.py -f ./infile.txt -o ./outfile.txt
+        python3 ./oxlet_cli.py -f ./infile.txt -o ./outfile.txt
   
 
