@@ -1,8 +1,11 @@
 from subprocess import check_output
 from bs4 import BeautifulSoup
+import requests
 
 
 BASE_URL = "https://www.oxfordlearnersdictionaries.com/definition/english/"
+HEADERS = requests.utils.default_headers()
+HEADERS.update({"User-Agent": "Edge"})
 
 
 def preprocess_words(words):
@@ -11,7 +14,8 @@ def preprocess_words(words):
 
 def crawl_resource(word) -> str:
     try:
-        page = check_output(f"curl -s -L {BASE_URL + word}", shell=True)
+        # page = check_output(f"curl -s -L {BASE_URL + word}", shell=True)
+        page = requests.get(BASE_URL + word, headers=HEADERS).text
         soup = BeautifulSoup(page, "html.parser")
         sense = soup.find(class_="sense")
     except:
