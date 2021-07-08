@@ -15,7 +15,7 @@ def index():
     words = new_words.splitlines()
     words = preprocess_words(words)
 
-    # handle potential command injection
+    # handle potential errors
     try:
         result = "".join(list(map(crawl_resource, words)))
         return render_template("index.html", new_words=new_words, result=result)
