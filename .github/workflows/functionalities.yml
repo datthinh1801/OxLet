@@ -38,5 +38,11 @@ jobs:
         python3 ./oxlet_cli.py -w "sustainable" -o ./outfile.txt
         echo sustainable > infile.txt
         python3 ./oxlet_cli.py -f ./infile.txt -o ./outfile.txt
+        
+    - name: Test errors
+      run: |
+        python3 ./oxlet_cli.py -w "; ls -la" -o ./outfile.txt
+        python3 ./oxlet_cli.py -w "null" -o ./outfile.txt
+        
   
 
