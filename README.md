@@ -14,7 +14,10 @@ A tool to generate vocabulary lists which eases the process of creating Quizlet 
 git clone https://github.com/datthinh1801/OxLet.git
 cd OxLet
 pip install -r requirements.txt
-```
+```  
+> This tool also has a web interface, [here](https://oxlet.herokuapp.com/).  
+
+
 ## Usage
 ```
 usage: oxlet.py [-h] [-w [WORDS]] [-f [INFILE]] [-o [OUTFILE]]
