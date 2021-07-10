@@ -1,36 +1,22 @@
 # OxLet
-A tool to generate a vocabulary list which eases the process of creating a Quizlet study set, using Oxford API.  
+A tool to generate vocabulary lists which eases the process of creating Quizlet study sets.  
 
 <p align="center">
-  <img height=150 width=150 src="https://www.oxfordlearnersdictionaries.com/us/external/images/home_2020/OLD_home_productsOALD.png?version=2.1.31">
+  <img height=100 width=100 src="https://user-images.githubusercontent.com/44528004/125007263-10fc2200-e08a-11eb-953c-90c47264fd67.png">
 </p>  
 <p align="center">
   <img src="https://github.com/datthinh1801/Oxford-API/actions/workflows/dependencies.yml/badge.svg">
   <img src="https://github.com/datthinh1801/OxLet/actions/workflows/functionalities.yml/badge.svg">
 </p>  
 
-## Acknowledgement
-Thanks [@luong07734](https://github.com/luong07734) for helping me to test and demo this tool on MacOS.  
+## Installation guide (CLI)
+```
+git clone https://github.com/datthinh1801/OxLet.git
+cd OxLet
+pip install -r requirements.txt
+```  
+> This tool also has a web interface, [here](https://oxlet.herokuapp.com/).  
 
-## Installation guide
-### Step 1: Download Python 3
-Go to the [download](https://www.python.org/downloads/) page of Python and download the latest version of Python 3 for your operating system. Then follow the instruction of the installation wizard to install Python 3 for your computer.  
-> Note that there are 2 major versions which are **Python 2** and **Python 3**. Make sure you select **Python 3** and download it.
-
-### Step 2: Download this tool
-Go to the [release tab](https://github.com/datthinh1801/Oxford-API/releases) ***(👈 click this)*** and click the icon ![image](https://user-images.githubusercontent.com/44528004/123025868-836fcf80-d405-11eb-9c6b-15c390b8cfb6.png) of the latest version to download the compressed file of this tool.  
-
-Then, you need to decompress (or extract) the downloaded file before moving on to **step 3**.  
-
-### Step 3: Install dependencies
-After downloading the tool, follows this instruction to install it.
-#### Windows
-![](https://github.com/datthinh1801/OxLet/blob/main/media/win10_install.gif)  
-
-#### MacOS
-![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Mac_installation.gif)  
-
-> Now you're ready to use.
 
 ## Usage
 ```
@@ -46,31 +32,8 @@ optional arguments:
                         the filename to write the results to (e.g. output.txt)
 ```  
 
-### Parameters explaination
-| Parameter | Meaning |
-|---|---|
-| `-w` | A list of words that you want to look up. Every 2 words shoud be separated by a comma or a comma followed by a space and all word must be enclosed in a pair of quotes _(either single quotes `' '` or double quotes `" "` are ok)_. |
-| `-f` | Specify the name of the input file containing your new words. |
-| `-o` | Specify the name of the output file. |  
-
-> **Note that:** `-o` is required while only one of the `-w` and the `-f` should be selected at a time.   
-
-### Format of the input file (if used)
-#### File extension
-The input file should be a text file (`.txt`) for the best performance.  
-#### File format
-The format of the contents of the input file should be **one word per line** or **one phrase per line**, and no separators such as `,` or `.` is required.  
-
-For example:  
-```
-inquire
-insist
-straightforward
-sort out
-```
-
-## Examples
-### Read new words from a file
+### Examples
+#### Read new words from a file
 I have a file (named `input.txt` residing in the same directory of this tool) containing my new words as follows:  
 ```
 inquire
@@ -92,7 +55,7 @@ python3 oxlet.py -f input.txt -o output.txt
 
 > You don't need to create the `output.txt` file beforehand. This tool will do it for you.
 
-### Read new words directly
+#### Read new words directly
 Windows:
 ```
 py oxlet.py -w "inquire, insist, straightforward, sort out" -o output.txt
@@ -119,20 +82,11 @@ e.g. she sorted out the clothes, some to be kept, some to be thrown away
 
 ```  
 
-### Demo
-This demo reads new words from a file but you can feed new words to the tool directly using the `-w` followed by a doubly-quoted string of your new words like the above example.  
-#### Windows
-![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Win_demo.gif)  
-
-#### MacOS
-![](https://github.com/datthinh1801/OxLet/blob/main/media/OxLet_Mac_demo.gif)  
-> **Note that:** Don't care about the `pip install -r requirements.txt` if you already run this command when installing the tool. 
-
 ## Currently supported elements
 | Element | Is supported ? |
 |---|---|
 | Terminology | Yes |
-| Pronunciation | No |
+| Pronunciation | Yes |
 | Word form | Yes *(to some extent, as idioms and phrasal verbs are yet supported)* |
 | Definition | Yes |
 | Example | Yes |  
