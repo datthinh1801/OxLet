@@ -29,7 +29,7 @@ def crawl_resource(word) -> str:
 
     try:
         # extract phonetic
-        phon = soup.find(class_="phon")
+        phon = soup.find_all(class_="phon")[1]
         result += f"\n({phon.text})"
     except:
         pass
