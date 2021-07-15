@@ -1,3 +1,5 @@
+from concurrent import futures
+import threading
 import requests
 from bs4 import BeautifulSoup
 
@@ -69,3 +71,14 @@ def crawl_resource(word) -> str:
     # append delimiter between 2 words
     result += "\n\n"
     return result
+
+
+def run(wordlist: list):
+    """
+    Create a vocabulary list from the specified wordlist.
+    """
+    with futures.ThreadPoolExecutor(max_workers=10) as executor:
+        # using map to cause to program to wait for all workers to complete
+        # before continue
+        results = list(executor.map(crawl_resource, wordlist))
+    return ''.join(results)

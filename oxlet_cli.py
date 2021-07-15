@@ -63,12 +63,6 @@ if __name__ == "__main__":
     words = get_word_list(args)
     words = helper.preprocess_words(words)
 
-    # empty the outfile first
-    with open(args.outfile, "w") as f:
-        pass
-    with open(args.outfile, "ab") as outfile:
-        for word in words:
-            print(f"Processing {word}...")
-            result = helper.crawl_resource(word)
-            # append the result to file
-            outfile.write(result.encode())
+    with open(args.outfile, "wb") as outfile:
+        results = helper.run(words)
+        outfile.write(results.encode())
