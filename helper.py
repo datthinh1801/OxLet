@@ -12,11 +12,9 @@ NUM_THREADS = 10
 
 def preprocess_words(words):
     """
-
     Preprocess words:
     -  Strip whitespaces at the begining and the end of the word/phrase
     -  Replace whitespaces within the word/phrase with dashes
-
     """
     words = list(map(str.strip, words))
     words = list(map(str.lower, words))
