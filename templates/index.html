@@ -1,30 +1,69 @@
 {% extends 'base.html' %}
 
 {% block body %}
+<div class="alert alert-info" role="alert">
+    <h5 class="alert-heading">How to use OxLet:</h5>
+    <ol>
+        <li>
+            Type your new words to the <b>New words</b> textbox below.<br>
+            The format is one word/phrase per line.<br>
+            <h6>Example:</h6>
+            <pre>
+    sustainable
+    set off
+    horrible
+            </pre>
+        </li>
+        <li>
+            Click <b>Submit</b>.
+        </li>
+    </ol>
+</div>
+
 <form method="POST" action="/">
     <div class="mb-3">
-        <h4 for="new-words" class="form-label" style="margin-bottom: 10px;">Your new words</h4>
+        <h3 for="new-words" class="form-label" style="margin-bottom: 10px;">New words</h3>
         <textarea class="form-control" id="new-words" name="new-words" rows="10">{{new_words}}</textarea>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 <div class="mb-3" style="margin-top: 50px;">
-    <h4 for="result" class="form-label" style="margin-bottom: 10px;">Result</h4>
-    <div style="margin: 20px 0px;
-        display: block;
-        position: relative;
-        border-left: 10px solid;
-        border-radius: 3px;
-        background-color: rgb(245, 247, 249);
-        border-left-color: rgb(221, 40, 40);
-        padding: 20px 30px;">
-        <strong>REMEMBER</strong> to select <code>|</code> as the separator between the
-        <strong>terminology</strong> and the
-        <strong>definition</strong>,
-        and select <code>\n\n</code> as the separator between <strong>cards</strong> in <a href="https://quizlet.com"
-            style="text-decoration: none;"><strong>Quizlet</strong></a>.
+
+    <div class="alert alert-primary" role="alert">
+        <h5 class="alert-heading">How to import this result to Quizlet:</h5>
+        <hr>
+        <p class="mb-0">
+        <ol>
+            <li><b>Copy</b> everything on the <b>Result</b> textbox below.</li>
+            <li>Open <a href="https://quizlet.com/" style="text-decoration: none; font-weight: bold">Quizlet</a> <i>(you
+                    might have to log in before moving on)</i>.</li>
+            <li>Select "<b>Create</b>".</li>
+            <li>Select "<b>Study set</b>".</li>
+            <li>Select "<b>Import from Word, Excel, Google Docs, etc.</b>".</li>
+            <li>
+                After the previous step, a new window appears.<br>
+                <b>Paste</b> the result which you copied in <b>step 1</b> to the textbox on the new window.
+            </li>
+            <li>Below that textbox, there are some radius buttons.<br>
+                <ul>
+                    <li>
+                        In the <b>Between term and definition</b> section, you need to choose the third button (which is
+                        called <b>custom</b>) and type <b>|</b> (the vertical bar which often resides above your
+                        <b>Enter</b> key on your keyboard).
+                    </li>
+                    <li>
+                        In the <b>Between cards</b> section, you also select the third button (which is also called
+                        <b>custom</b>) and type <b>\n\n</b>.
+                    </li>
+                </ul>
+            </li>
+            <li>Finally, click <b>Import</b>.</li>
+        </ol>
+        </p>
     </div>
+
+    <h3 for="result" class="form-label" style="margin-bottom: 10px;">Result</h3>
     <textarea class="form-control" id="result" name="result" rows="10">{{result}}</textarea>
 </div>
 
