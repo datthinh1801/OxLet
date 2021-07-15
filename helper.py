@@ -18,6 +18,7 @@ def preprocess_words(words):
     -  Replace whitespaces within the word/phrase with dashes
     """
     words = list(map(str.strip, words))
+    words = list(map(str.lower, words))
     return list(map(lambda word: "-".join(word.split(" ")), words))
 
 
