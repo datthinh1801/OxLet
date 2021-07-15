@@ -1,19 +1,28 @@
-from subprocess import check_output
-from bs4 import BeautifulSoup
+from concurrent import futures
 import requests
+from bs4 import BeautifulSoup
 
 
 BASE_URL = "https://www.oxfordlearnersdictionaries.com/definition/english/"
 HEADERS = requests.utils.default_headers()
 HEADERS.update({"User-Agent": "Edge"})
 
+NUM_THREADS = 10
+
 
 def preprocess_words(words):
+    """
+    Preprocess words:
+    -  Strip whitespaces at the begining and the end of the word/phrase
+    -  Replace whitespaces within the word/phrase with dashes
+    """
     words = list(map(str.strip, words))
+    words = list(map(str.lower, words))
     return list(map(lambda word: "-".join(word.split(" ")), words))
 
 
 def crawl_resource(word) -> str:
+    """Get the web page of the word and parse it."""
     page = requests.get(BASE_URL + word, headers=HEADERS).text
     soup = BeautifulSoup(page, "html.parser")
     sense = soup.find(class_="sense")
@@ -60,3 +69,12 @@ def crawl_resource(word) -> str:
     # append delimiter between 2 words
     result += "\n\n"
     return result
+
+
+def run(wordlist: list):
+    """Create a vocabulary list from the specified wordlist."""
+    with futures.ThreadPoolExecutor(max_workers=10) as executor:
+        # using map to cause to program to wait for all workers to complete
+        # before continue
+        results = list(executor.map(crawl_resource, wordlist))
+    return ''.join(results)

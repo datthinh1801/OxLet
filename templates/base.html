@@ -13,7 +13,7 @@
 <body>
     <a href="/" style="text-decoration: none">
         <header style="
-            font-size: 30px; 
+            font-size: 30px;
             font-weight: bold;
             color: white;
             background: rgb(66, 87, 178);
@@ -26,14 +26,16 @@
         </header>
     </a>
 
-
+    <!-- BEGIN BODY TEMPLATE -->
     <div class="container" style="margin-top: 40px">
         {% block body %}
         {% endblock %}
     </div>
+    <!-- END BODY TEMPLATE -->
 
-    <div class="bottom" style="background-color: #2b2b2b; 
-    color:white; 
+
+    <div class="bottom" style="background-color: #2b2b2b;
+    color:white;
     height: 50px;
     display: flex;
     align-items: center;
