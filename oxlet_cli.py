@@ -6,9 +6,7 @@ import helper
 
 
 def create_parser():
-    """
-    Create a parser and parse CLI arguments.
-    """
+    """Create a parser and parse CLI arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-w",
@@ -39,16 +37,13 @@ def create_parser():
 
 
 def get_word_list(args) -> list:
-    """
-    Get words from a wordlist.
-    """
+    """Get words from a wordlist."""
     if args.infile:
         with open(args.infile, "r") as wordlist:
             words = list(map(str.strip, wordlist.readlines()))
     elif args.words:
         words = list(map(str.strip, args.words.split(",")))
     else:
-
         print(
             "Invalid arguments. Please run the following command for a how-to instruction."
         )
