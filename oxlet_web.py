@@ -7,9 +7,7 @@ app = Flask(__name__, static_folder="templates/images")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    """
-    Handle GET and POST methods of the home page.
-    """
+    """GET and POST methods of the home page."""
     if request.method != "POST":
         return render_template("index.html")
 

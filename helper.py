@@ -1,5 +1,4 @@
 from concurrent import futures
-import threading
 import requests
 from bs4 import BeautifulSoup
 
@@ -23,9 +22,7 @@ def preprocess_words(words):
 
 
 def crawl_resource(word) -> str:
-    """
-    Get the web page of the word and parse it.
-    """
+    """Get the web page of the word and parse it."""
     page = requests.get(BASE_URL + word, headers=HEADERS).text
     soup = BeautifulSoup(page, "html.parser")
     sense = soup.find(class_="sense")
@@ -75,9 +72,7 @@ def crawl_resource(word) -> str:
 
 
 def run(wordlist: list):
-    """
-    Create a vocabulary list from the specified wordlist.
-    """
+    """Create a vocabulary list from the specified wordlist."""
     with futures.ThreadPoolExecutor(max_workers=10) as executor:
         # using map to cause to program to wait for all workers to complete
         # before continue
