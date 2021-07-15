@@ -1,19 +1,28 @@
-from subprocess import check_output
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 
 BASE_URL = "https://www.oxfordlearnersdictionaries.com/definition/english/"
 HEADERS = requests.utils.default_headers()
 HEADERS.update({"User-Agent": "Edge"})
 
+NUM_THREADS = 10
+
 
 def preprocess_words(words):
+    """
+    Preprocess words:
+    -  Strip whitespaces at the begining and the end of the word/phrase
+    -  Replace whitespaces within the word/phrase with dashes
+    """
     words = list(map(str.strip, words))
     return list(map(lambda word: "-".join(word.split(" ")), words))
 
 
 def crawl_resource(word) -> str:
+    """
+    Get the web page of the word and parse it.
+    """
     page = requests.get(BASE_URL + word, headers=HEADERS).text
     soup = BeautifulSoup(page, "html.parser")
     sense = soup.find(class_="sense")

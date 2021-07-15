@@ -1,8 +1,14 @@
+import sys
+import os
 import argparse
-from helper import *
+
+import helper
 
 
 def create_parser():
+    """
+    Create a parser and parse CLI arguments.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-w",
@@ -33,14 +39,15 @@ def create_parser():
 
 
 def get_word_list(args) -> list:
+    """
+    Get words from a wordlist.
+    """
     if args.infile:
-        with open(args.infile, "r") as f:
-            words = list(map(str.strip, f.readlines()))
+        with open(args.infile, "r") as wordlist:
+            words = list(map(str.strip, wordlist.readlines()))
     elif args.words:
         words = list(map(str.strip, args.words.split(",")))
     else:
-        import sys
-        import os
 
         print(
             "Invalid arguments. Please run the following command for a how-to instruction."
@@ -54,7 +61,7 @@ def get_word_list(args) -> list:
 if __name__ == "__main__":
     args = create_parser()
     words = get_word_list(args)
-    words = preprocess_words(words)
+    words = helper.preprocess_words(words)
 
     # empty the outfile first
     with open(args.outfile, "w") as f:
@@ -62,6 +69,6 @@ if __name__ == "__main__":
     with open(args.outfile, "ab") as outfile:
         for word in words:
             print(f"Processing {word}...")
-            result = crawl_resource(word)
+            result = helper.crawl_resource(word)
             # append the result to file
             outfile.write(result.encode())
