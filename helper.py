@@ -19,7 +19,7 @@ DICT_PROFILES = {
     },
     "cambridge": {
         "dict_type": "cambridge",
-        "hw_class": "hw dhw",
+        "hw_class": "dhw",
         "phon_class": "ipa dipa lpr-2 lpl-1",
         "wf_class": "pos dpos",
         "sense_class": "ddef_block",
@@ -77,7 +77,6 @@ def parse_page(word, dict_type, hw_class, phon_class, wf_class, sense_class, def
             result += definition.text.replace(':', '')
         else:
             result += definition.text
-        print(result)
     except:
         return None
 
@@ -95,9 +94,12 @@ def parse_page(word, dict_type, hw_class, phon_class, wf_class, sense_class, def
 
 def crawl_resource(word) -> str:
     """Get the web page of the word and parse it."""
-    result = parse_page(word, **DICT_PROFILES['oxford'])
-    if result is None:
-        result = parse_page(word, **DICT_PROFILES['cambridge'])
+    for dictionary in DICT_PROFILES:
+        result = parse_page(word, **DICT_PROFILES[dictionary])
+        if result is not None:
+            break
+    else:
+        result = ''
     return result
 
 
