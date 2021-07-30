@@ -87,7 +87,7 @@ e.g. she sorted out the clothes, some to be kept, some to be thrown away
 |---|---|
 | Terminology | Yes |
 | Pronunciation | Yes |
-| Word form | Yes *(to some extent, as idioms and phrasal verbs are yet supported)* |
+| Word form | Yes |
 | Definition | Yes |
 | Example | Yes |  
 
