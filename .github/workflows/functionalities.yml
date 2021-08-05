@@ -8,10 +8,14 @@ on:
     branches: [ main ]
     paths:
       - '*.py'
+      - 'requirements.txt'
+      - '*.yml'
   pull_request:
     branches: [ main ]
     paths:
       - '*.py'
+      - 'requirements.txt'
+      - '*.yml'
 
 jobs:
   build:
