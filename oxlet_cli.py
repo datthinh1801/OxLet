@@ -1,6 +1,7 @@
-import sys
-import os
 import argparse
+import asyncio
+import os
+import sys
 
 import helper
 
@@ -54,10 +55,15 @@ def get_word_list(args) -> list:
 
 
 if __name__ == "__main__":
+    # fix Windows-specific exception:
+    # RuntimeError: Event loop is closed.
+    if sys.platform.startswith('win'):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
     args = create_parser()
     words = get_word_list(args)
     words = helper.preprocess_words(words)
 
     with open(args.outfile, "wb") as outfile:
-        results = helper.run(words)
+        results = asyncio.run(helper.run(words))
         outfile.write(results.encode())

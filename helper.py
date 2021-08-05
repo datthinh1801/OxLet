@@ -1,12 +1,11 @@
-from concurrent import futures
-import requests
-from bs4 import BeautifulSoup
+import asyncio
 
+import aiohttp
+from aiohttp import ClientSession
+from bs4 import BeautifulSoup
 
 BASE_URL = {"oxford": "https://www.oxfordlearnersdictionaries.com/definition/english/",
             "cambridge": "https://dictionary.cambridge.org/dictionary/english/"}
-HEADERS = requests.utils.default_headers()
-HEADERS.update({"User-Agent": "Edge"})
 DICT_PROFILES = {
     "oxford": {
         "dict_type": "oxford",
@@ -28,8 +27,6 @@ DICT_PROFILES = {
     }
 }
 
-NUM_THREADS = 10
-
 
 def preprocess_words(words):
     """
@@ -42,38 +39,49 @@ def preprocess_words(words):
     return list(map(lambda word: "-".join(word.split(" ")), words))
 
 
-def parse_page(word, dict_type, hw_class, phon_class, wf_class, sense_class, def_class, ex_class) -> str:
+async def fetch_html(url: str, session: ClientSession):
+    """Fetch html from a given url."""
+    resp = await session.get(url=url)
+    html = await resp.text()
+    return html
+
+
+async def parse_page(session: aiohttp.ClientSession,
+                     word: str,
+                     **kwargs) -> str:
     """Crawl the source code and parse elements via given classes."""
-    page = requests.get(BASE_URL[dict_type] + word, headers=HEADERS).text
+    url = BASE_URL[kwargs['dict_type']] + word
+    page = await fetch_html(url=url, session=session)
     soup = BeautifulSoup(page, "html.parser")
 
     # extract headword
     try:
-        headword = soup.find(class_=hw_class)
+        headword = soup.find(class_=kwargs['hw_class'])
         result = headword.text
     except:
         return None
 
     # extract phonetic
     try:
-        # extract phonetic
-        phon = soup.find_all(class_=phon_class)[1]
+        # extract NA phonetic
+        phon = soup.find_all(class_=kwargs['phon_class'])[1]
         result += f"\n({phon.text})"
     except:
         pass
 
     # extract word form
     try:
-        word_form = soup.find(class_=wf_class)
+        word_form = soup.find(class_=kwargs['wf_class'])
         result += f"|({word_form.text}) "
     except:
+        result += '|'
         pass
 
-    sense = soup.find(class_=sense_class)
+    sense = soup.find(class_=kwargs['sense_class'])
     # extract definition
     try:
-        definition = sense.find(class_=def_class)
-        if dict_type == "cambridge":
+        definition = sense.find(class_=kwargs['def_class'])
+        if kwargs['dict_type'] == "cambridge":
             result += definition.text.replace(':', '')
         else:
             result += definition.text
@@ -82,20 +90,18 @@ def parse_page(word, dict_type, hw_class, phon_class, wf_class, sense_class, def
 
     # extract example
     try:
-        example = sense.find(class_=ex_class)
+        example = sense.find(class_=kwargs['ex_class'])
         result += "\ne.g. " + example.text
     except:
         pass
 
-    # append delimiter between 2 words
-    result += "\n\n"
     return result
 
 
-def crawl_resource(word) -> str:
+async def crawl_resource(session: aiohttp.ClientSession,  word: str) -> str:
     """Get the web page of the word and parse it."""
     for dictionary in DICT_PROFILES:
-        result = parse_page(word, **DICT_PROFILES[dictionary])
+        result = await parse_page(session, word, **DICT_PROFILES[dictionary])
         if result is not None:
             break
     else:
@@ -103,10 +109,11 @@ def crawl_resource(word) -> str:
     return result
 
 
-def run(wordlist: list):
+async def run(wordlist: list):
     """Create a vocabulary list from the specified wordlist."""
-    with futures.ThreadPoolExecutor(max_workers=10) as executor:
-        # using map to cause to program to wait for all workers to complete
-        # before continue
-        results = list(executor.map(crawl_resource, wordlist))
-    return ''.join(results)
+    async with aiohttp.ClientSession(headers={"User-Agent": "Chrome"}) as session:
+        tasks = []
+        for word in wordlist:
+            tasks.append(crawl_resource(session=session, word=word))
+        results = await asyncio.gather(*tasks)
+    return '\n\n'.join(results)
