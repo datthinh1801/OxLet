@@ -3,8 +3,7 @@ import sys
 
 from flask import Flask, render_template, request
 
-import helper
-
+import utils
 
 app = Flask(__name__, static_folder="templates/images")
 
@@ -17,11 +16,11 @@ def index():
 
     new_words = request.form["new-words"]
     words = new_words.splitlines()
-    words = helper.preprocess_words(words)
+    words = utils.preprocess_words(words)
 
     # handle potential errors
     try:
-        result = asyncio.run(helper.run(words))
+        result = asyncio.run(utils.run(words))
         return render_template("index.html", new_words=new_words, result=result)
     except:
         return render_template("index.html")

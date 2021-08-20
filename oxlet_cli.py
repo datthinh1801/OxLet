@@ -3,7 +3,7 @@ import asyncio
 import os
 import sys
 
-import helper
+import utils
 
 
 def create_parser():
@@ -62,8 +62,8 @@ if __name__ == "__main__":
 
     args = create_parser()
     words = get_word_list(args)
-    words = helper.preprocess_words(words)
+    words = utils.preprocess_words(words)
 
     with open(args.outfile, "wb") as outfile:
-        results = asyncio.run(helper.run(words))
+        results = asyncio.run(utils.run(words))
         outfile.write(results.encode())

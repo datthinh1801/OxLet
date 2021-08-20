@@ -98,7 +98,7 @@ async def parse_page(session: aiohttp.ClientSession,
     return result
 
 
-async def crawl_resource(session: aiohttp.ClientSession,  word: str) -> str:
+async def crawl_resource(session: aiohttp.ClientSession, word: str) -> str:
     """Get the web page of the word and parse it."""
     for dictionary in DICT_PROFILES:
         result = await parse_page(session, word, **DICT_PROFILES[dictionary])
