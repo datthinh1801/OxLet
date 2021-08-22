@@ -15,11 +15,11 @@ on:
   pull_request:
     branches: [ main ]
     paths:
-      - '*.py'
+      - '**/*.py'
       - 'requirements.txt'
-      - '*.yml'
-      - '*.html'
-      - '*.css'
+      - '**/*.yml'
+      - '**/*.html'
+      - '**/*.css'
 
 jobs:
   build:
