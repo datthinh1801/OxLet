@@ -82,14 +82,22 @@ e.g. she sorted out the clothes, some to be kept, some to be thrown away
 
 ```  
 
-## Currently supported elements
-| Element | Is supported ? |
+## Currently supported
+| Element | Is Supported? |
 |---|---|
 | Terminology | Yes |
 | Pronunciation | Yes |
 | Word form | Yes |
 | Definition | Yes |
 | Example | Yes |  
+
+| Dictionary | Is Supported? |
+|---|---|
+| Oxford Learner's Dictionary | Yes |
+| Cambridge Dictionary | Yes |
+| Macmillan Dictionary | No |
+| Longman Dictionary | No |
+| Merriam-Webster Dictionary | No |
 
 ## Integrate to Quizlet
 This tool uses `|` as the separator between the terminology and the definition, `\n\n` (a blank line) between 2 different words. Therefore, if you are about to use this output file for [Quizlet](https://quizlet.com/latest), you should do as the followings:
