@@ -1,5 +1,5 @@
 header{
-    background-color: #4257b2;
+    background-color: #fff3cd;
     position: absolute;
     top: 0;
     left: 0;
@@ -37,4 +37,9 @@ article {
 
 #code-listing {
     list-style: none
+}
+
+#logo {
+    max-width: 80px;
+    max-height: 80px;
 }
