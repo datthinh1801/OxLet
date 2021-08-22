@@ -3,7 +3,7 @@
 A tool to generate vocabulary lists which eases the process of creating Quizlet study sets.
 
 <p align="center">
-  <img height=100 width=100 src="https://user-images.githubusercontent.com/44528004/125007263-10fc2200-e08a-11eb-953c-90c47264fd67.png">
+  <img height=100 width=150 src="https://github.com/datthinh1801/OxLet/blob/dev/static/images/OxLetLogo.png">
 </p>  
 <p align="center">
   <img src="https://github.com/datthinh1801/Oxford-API/actions/workflows/dependencies.yml/badge.svg">
