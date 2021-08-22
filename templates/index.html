@@ -1,71 +1,109 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block body %}
-<div class="alert alert-info" role="alert">
-    <h5 class="alert-heading">How to use OxLet:</h5>
-    <hr>
-    <ol>
-        <li>
-            Type your new words to the <b>New words</b> textbox below.<br>
-            The format is one word/phrase per line.<br>
-            <h6>Example:</h6>
-            <pre>
-    sustainable
-    set off
-    horrible
-            </pre>
-        </li>
-        <li>
-            Click <b>Submit</b>.
-        </li>
-    </ol>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../static/images/OxLet.png">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>OxLet</title>
+</head>
 
-<form method="POST" action="/">
-    <div class="mb-3">
-        <h3 for="new-words" class="form-label" style="margin-bottom: 10px;">New words</h3>
-        <textarea class="form-control" id="new-words" name="new-words" rows="10">{{new_words}}</textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<body>
+    <header>
+        OxLet
+    </header>
 
-<div class="mb-3" style="margin-top: 50px;">
+    <article>
+        <div class="body-container">
+            <!-- NEW WORD SECTION -->
+            <div class="nw-container">
+                <div class="alert alert-info" role="alert">
+                    <h5 class="alert-heading">How to use OxLet:</h5>
+                    <hr>
+                    <ol>
+                        <li>
+                            Type your new words to the <b>textbox below</b>.<br>
+                            The format is one word/phrase per line.<br>
+                            <h6>Example:</h6>
+                            <ul id="code-listing">
+                                <li>sustainable</li>
+                                <li>set off</li>
+                                <li>horrible</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Click <b>Submit</b>.
+                        </li>
+                    </ol>
+                </div>
 
-    <div class="alert alert-primary" role="alert">
-        <h5 class="alert-heading">How to import this result to Quizlet:</h5>
-        <hr>
-        <p class="mb-0">
-        <ol>
-            <li><b>Copy</b> everything on the <b>Result</b> textbox below.</li>
-            <li>Open <a href="https://quizlet.com/" style="text-decoration: none; font-weight: bold">Quizlet</a> <i>(you
-                    might have to log in before moving on)</i>.</li>
-            <li>Select "<b>Create</b>".</li>
-            <li>Select "<b>Study set</b>".</li>
-            <li>Select "<b>Import from Word, Excel, Google Docs, etc.</b>".</li>
-            <li>
-                After the previous step, a new window appears.<br>
-                <b>Paste</b> the result which you copied in <b>step 1</b> to the textbox on the new window.
-            </li>
-            <li>Below that textbox, there are some radius buttons.<br>
-                <ul>
-                    <li>
-                        In the <b>Between term and definition</b> section, you need to choose the third button (which is
-                        called <b>custom</b>) and type <b>|</b> (the vertical bar which often resides above your
-                        <b>Enter</b> key on your keyboard).
-                    </li>
-                    <li>
-                        In the <b>Between cards</b> section, you also select the third button (which is also called
-                        <b>custom</b>) and type <b>\n\n</b>.
-                    </li>
-                </ul>
-            </li>
-            <li>Finally, click <b>Import</b>.</li>
-        </ol>
-        </p>
-    </div>
+                <form method="POST" action="/">
+                    <div class="mb-3">
+                        <textarea class="form-control" id="new-words" name="new-words" rows="10"
+                            placeholder="Enter your new words...">{{new_words}}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
 
-    <h3 for="result" class="form-label" style="margin-bottom: 10px;">Result</h3>
-    <textarea class="form-control" id="result" name="result" rows="10">{{result}}</textarea>
-</div>
+            <!-- RESULT SECTION -->
+            <div class="result-container">
+                <div class="alert alert-primary" role="alert">
+                    <h5>How to import this result to Quizlet:</h5>
+                    <hr>
+                    <p>
+                    <ol>
+                        <li><b>Copy</b> everything on the <b>textbox below</b>.</li>
+                        <li>Open <a href="https://quizlet.com/"
+                                style="text-decoration: none; font-weight: bold">Quizlet</a>
+                            <i>(you
+                                might have to log in before moving on)</i>.
+                        </li>
+                        <li>Select "<b>Create</b>". Then, <b>Study set</b>. Then, <b>Import from Word, Excel, Google
+                                Docs, etc.</b></li>
+                        <li>
+                            After the previous step, a new window appears.<br>
+                            <b>Paste</b> the result which you copied in <b>step 1</b> to the textbox on the new window.
+                        </li>
+                        <li>Below that textbox, there are some radius buttons.<br>
+                            <ul>
+                                <li>
+                                    In the <b>Between term and definition</b> section, you need to choose the third
+                                    button (which is
+                                    called <b>custom</b>) and type <b>|</b> (the vertical bar which often resides above
+                                    your
+                                    <b>Enter</b> key on your keyboard).
+                                </li>
+                                <li>
+                                    In the <b>Between cards</b> section, you also select the third button (which is also
+                                    called
+                                    <b>custom</b>) and type <b>\n\n</b>.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Finally, click <b>Import</b>.</li>
+                    </ol>
+                    </p>
+                </div>
+                <div>
+                    <textarea class="form-control" id="result" name="result" rows="10"
+                        placeholder="Result goes here...">{{result}}</textarea>
+                </div>
+            </div>
 
-{% endblock %}
+        </div>
+    </article>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
