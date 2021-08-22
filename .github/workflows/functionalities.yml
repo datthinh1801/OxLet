@@ -10,12 +10,16 @@ on:
       - '*.py'
       - 'requirements.txt'
       - '*.yml'
+      - '*.html'
+      - '*.css'
   pull_request:
     branches: [ main ]
     paths:
       - '*.py'
       - 'requirements.txt'
       - '*.yml'
+      - '*.html'
+      - '*.css'
 
 jobs:
   build:
