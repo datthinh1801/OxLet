@@ -5,7 +5,7 @@ from flask import Flask, render_template, request
 
 import utils
 
-app = Flask(__name__, static_folder="templates/images")
+app = Flask(__name__, static_folder="static")
 
 
 @app.route("/", methods=["GET", "POST"])
