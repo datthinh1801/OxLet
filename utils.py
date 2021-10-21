@@ -121,13 +121,6 @@ async def crawl_resource(session: aiohttp.ClientSession, word: str) -> dict or N
     return result
 
 
-async def connect_anki(session: aiohttp.ClientSession, word: str):
-    from pprint import pprint
-    result = await crawl_resource(session, word)
-    pprint(result)
-    # resp = await session.post(url='http://localhost:8765', data=json.dumps(data).encode('utf-8'))
-
-
 async def run(wordlist: list):
     """Create a vocabulary list from the specified wordlist."""
     async with aiohttp.ClientSession(headers={"User-Agent": "Chrome"}) as session:
@@ -138,10 +131,3 @@ async def run(wordlist: list):
     return '\n\n'.join(results)
 
 
-async def main(word):
-    async with ClientSession(headers={"User-Agent": "Chrome"}) as session:
-        await connect_anki(session, word)
-
-
-if __name__ == '__main__':
-    asyncio.run(main('imperceptible'))
