@@ -93,10 +93,12 @@ async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dic
         else:
             uk = soup.find_all(class_=kwargs['uk_phon_class'])[0]
             result['phonetics']['uk']['phon'] = uk.find(class_=kwargs['phon_text']).text
-            result['phonetics']['uk']['media'] = uk.find('source', type=kwargs['phon_media'])['src']
+            result['phonetics']['uk']['media'] = 'https://dictionary.cambridge.org' + \
+                                                 uk.find('source', type=kwargs['phon_media'])['src']
             us = soup.find_all(class_=kwargs['us_phon_class'])[0]
             result['phonetics']['us']['phon'] = us.find(class_=kwargs['phon_text']).text
-            result['phonetics']['us']['media'] = us.find('source', type=kwargs['phon_media'])['src']
+            result['phonetics']['us']['media'] = 'https://dictionary.cambridge.org' + \
+                                                 us.find('source', type=kwargs['phon_media'])['src']
 
     except:
         pass

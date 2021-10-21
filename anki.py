@@ -11,6 +11,41 @@ async def send_to_anki(session: ClientSession, data: dict):
 
 async def create_new_note(session: ClientSession, word: str):
     result = await crawl_resource(session, word)
+    if result is None:
+        return None
+
+    new_card = {
+        "action": "addNote",
+        "version": 6,
+        "params": {
+            "note": {
+                "deckName": "Default",
+                "modelName": "English (by datthinh1801)",
+                "fields": {
+                    "Word": result['word'],
+                    "Phonetic": result['phonetics']['us']['phon'],
+                    "Word form": result['word_form'],
+                    "Definition": result['definition']
+                },
+                'options': {
+                    "allowDuplicate": False,
+                    "duplicateScope": "deck",
+                    "duplicateScopeOptions": {
+                        "deckName": "Default",
+                        "checkChildren": False,
+                        "checkAllModels": False
+                    }
+                },
+                "tags": ["english_vocab"],
+                "audio": [{
+                    "url": result['phonetics']['us']['media'],
+                    "filename": f'{result["word"]}_us.mp3',
+                    "fields": ["Phonetic"]
+                }]
+            }
+        }
+    }
+    return await send_to_anki(session, new_card)
 
 
 async def check_model_exist(session: ClientSession) -> bool:
@@ -58,7 +93,7 @@ async def create_new_model(session: ClientSession):
 async def main(word):
     async with ClientSession(headers={"User-Agent": "Chrome"}) as session:
         # await create_new_note(session, word)
-        print(await create_new_model(session))
+        print(await create_new_note(session, word))
 
 
 if __name__ == '__main__':
