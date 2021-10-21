@@ -1,3 +1,4 @@
+import json
 import asyncio
 
 import aiohttp
@@ -10,7 +11,8 @@ DICT_PROFILES = {
     "oxford": {
         "dict_type": "oxford",
         "hw_class": "headword",
-        "phon_class": "phon",
+        "uk_phon_class": "phons_br",
+        "us_phon_class": "phons_n_am",
         "wf_class": "pos",
         "sense_class": "sense",
         "def_class": "def",
@@ -31,7 +33,7 @@ DICT_PROFILES = {
 def preprocess_words(words):
     """
     Preprocess words:
-    -  Strip whitespaces at the begining and the end of the word/phrase
+    -  Strip whitespaces at the beginning and the end of the word/phrase
     -  Replace whitespaces within the word/phrase with dashes
     """
     words = list(map(str.strip, words))
@@ -46,35 +48,47 @@ async def fetch_html(url: str, session: ClientSession):
     return html
 
 
-async def parse_page(session: aiohttp.ClientSession,
-                     word: str,
-                     **kwargs) -> str:
+async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dict:
     """Crawl the source code and parse elements via given classes."""
     url = BASE_URL[kwargs['dict_type']] + word
     page = await fetch_html(url=url, session=session)
     soup = BeautifulSoup(page, "html.parser")
 
+    result = dict()
+
     # extract headword
     try:
-        headword = soup.find(class_=kwargs['hw_class'])
-        result = headword.text
+        result['word'] = soup.find(class_=kwargs['hw_class']).text
     except:
         return None
 
     # extract phonetic
     try:
         # extract NA phonetic
-        phon = soup.find_all(class_=kwargs['phon_class'])[1]
-        result += f"\n({phon.text})"
-    except:
+        uk = soup.find_all('div', kwargs['uk_phon_class'])[0]
+        uk_phonetic = uk.find('span', 'phon').text
+        uk_media = uk.find('div')['data-src-mp3']
+        us = soup.find_all('div', kwargs['us_phon_class'])[0]
+        us_phonetic = us.find('span', 'phon').text
+        us_media = us.find('div')['data-src-mp3']
+        result['phonetics'] = {
+            'uk': {
+                'phon': uk_phonetic,
+                'media': uk_media,
+            },
+            'us': {
+                'phon': us_phonetic,
+                'media': us_media,
+            }
+        }
+    except Exception as e:
+        print(e)
         pass
 
     # extract word form
     try:
-        word_form = soup.find(class_=kwargs['wf_class'])
-        result += f"|({word_form.text}) "
+        result['word_form'] = soup.find(class_=kwargs['wf_class']).text
     except:
-        result += '|'
         pass
 
     sense = soup.find(class_=kwargs['sense_class'])
@@ -82,31 +96,36 @@ async def parse_page(session: aiohttp.ClientSession,
     try:
         definition = sense.find(class_=kwargs['def_class'])
         if kwargs['dict_type'] == "cambridge":
-            result += definition.text.replace(':', '')
+            result['definition'] = definition.text.replace(':', '')
         else:
-            result += definition.text
+            result['definition'] = definition.text
     except:
         return None
 
     # extract example
     try:
-        example = sense.find(class_=kwargs['ex_class'])
-        result += "\ne.g. " + example.text
+        result['example'] = sense.find(class_=kwargs['ex_class']).text
     except:
         pass
 
     return result
 
 
-async def crawl_resource(session: aiohttp.ClientSession, word: str) -> str:
+async def crawl_resource(session: aiohttp.ClientSession, word: str) -> dict or None:
     """Get the web page of the word and parse it."""
+    result = None
     for dictionary in DICT_PROFILES:
         result = await parse_page(session, word, **DICT_PROFILES[dictionary])
         if result is not None:
             break
-    else:
-        result = ''
     return result
+
+
+async def connect_anki(session: aiohttp.ClientSession, word: str):
+    from pprint import pprint
+    result = await crawl_resource(session, word)
+    pprint(result)
+    # resp = await session.post(url='http://localhost:8765', data=json.dumps(data).encode('utf-8'))
 
 
 async def run(wordlist: list):
@@ -117,3 +136,12 @@ async def run(wordlist: list):
             tasks.append(crawl_resource(session=session, word=word))
         results = await asyncio.gather(*tasks)
     return '\n\n'.join(results)
+
+
+async def main(word):
+    async with ClientSession(headers={"User-Agent": "Chrome"}) as session:
+        await connect_anki(session, word)
+
+
+if __name__ == '__main__':
+    asyncio.run(main('imperceptible'))
