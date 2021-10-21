@@ -69,4 +69,4 @@ if __name__ == "__main__":
         with open(args.outfile, "wb") as outfile:
             outfile.write(results.encode())
     else:
-        print('\n\n'.join(list(map(utils.parse_word_dict, results))))
+        print(results)

@@ -136,7 +136,7 @@ def parse_word_dict(data) -> str:
     return result
 
 
-async def run(wordlist: list):
+async def run(wordlist: list, return_str=True):
     """Create a vocabulary list from the specified wordlist."""
     async with aiohttp.ClientSession(headers={"User-Agent": "Chrome"}) as session:
         tasks = []
@@ -144,4 +144,6 @@ async def run(wordlist: list):
             tasks.append(crawl_resource(session=session, word=word))
         results = await asyncio.gather(*tasks)
     # return '\n\n'.join(results)
+    if return_str:
+        return '\n\n'.join(list(map(parse_word_dict, results)))
     return results
