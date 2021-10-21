@@ -93,7 +93,7 @@ async def create_new_model(session: ClientSession):
 async def main(word):
     async with ClientSession(headers={"User-Agent": "Chrome"}) as session:
         # await create_new_note(session, word)
-        print(await create_new_note(session, word))
+        print((await create_new_note(session, word)).status)
 
 
 if __name__ == '__main__':
