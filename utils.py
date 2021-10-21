@@ -121,6 +121,21 @@ async def crawl_resource(session: aiohttp.ClientSession, word: str) -> dict or N
     return result
 
 
+def parse_word_dict(data) -> str:
+    if data is None:
+        return ''
+
+    result = data['word']
+    if data['phonetics']['us']['phon']:
+        result += '\n' + data['phonetics']['us']['phon']
+    result += '|'
+    if data['word_form']:
+        result += f"({data['word_form']})"
+    if data['example']:
+        result += '\n' + data['example']
+    return result
+
+
 async def run(wordlist: list):
     """Create a vocabulary list from the specified wordlist."""
     async with aiohttp.ClientSession(headers={"User-Agent": "Chrome"}) as session:
@@ -128,6 +143,5 @@ async def run(wordlist: list):
         for word in wordlist:
             tasks.append(crawl_resource(session=session, word=word))
         results = await asyncio.gather(*tasks)
-    return '\n\n'.join(results)
-
-
+    # return '\n\n'.join(results)
+    return results

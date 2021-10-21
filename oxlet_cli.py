@@ -64,6 +64,9 @@ if __name__ == "__main__":
     words = get_word_list(args)
     words = utils.preprocess_words(words)
 
-    with open(args.outfile, "wb") as outfile:
-        results = asyncio.run(utils.run(words))
-        outfile.write(results.encode())
+    results = asyncio.run(utils.run(words))
+    if args.outfile:
+        with open(args.outfile, "wb") as outfile:
+            outfile.write(results.encode())
+    else:
+        print('\n\n'.join(list(map(utils.parse_word_dict, results))))

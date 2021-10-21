@@ -11,8 +11,6 @@ async def send_to_anki(session: ClientSession, data: dict):
 
 async def create_new_note(session: ClientSession, word: str):
     result = await crawl_resource(session, word)
-    data = json.dumps(result).encode('utf-8')
-    # resp = await session.post(url='http://localhost:8765', data=json.dumps(data).encode('utf-8'))
 
 
 async def check_model_exist(session: ClientSession) -> bool:
