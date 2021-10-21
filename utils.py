@@ -13,6 +13,8 @@ DICT_PROFILES = {
         "hw_class": "headword",
         "uk_phon_class": "phons_br",
         "us_phon_class": "phons_n_am",
+        "phon_text": "phon",
+        "phon_media": "data-src-mp3",
         "wf_class": "pos",
         "sense_class": "sense",
         "def_class": "def",
@@ -21,7 +23,10 @@ DICT_PROFILES = {
     "cambridge": {
         "dict_type": "cambridge",
         "hw_class": "dhw",
-        "phon_class": "ipa dipa lpr-2 lpl-1",
+        "uk_phon_class": "uk dpron-i",
+        "us_phon_class": "us dpron-i",
+        "phon_text": "pron dpron",
+        "phon_media": "audio/mpeg",
         "wf_class": "pos dpos",
         "sense_class": "ddef_block",
         "def_class": "def ddef_d db",
@@ -62,15 +67,26 @@ async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dic
     except:
         return None
 
+    # print(soup.find_all(class_='us')[0].find('source', type='audio/mpeg')['src'])
     # extract phonetic
     try:
         # extract NA phonetic
-        uk = soup.find_all('div', kwargs['uk_phon_class'])[0]
-        uk_phonetic = uk.find('span', 'phon').text
-        uk_media = uk.find('div')['data-src-mp3']
-        us = soup.find_all('div', kwargs['us_phon_class'])[0]
-        us_phonetic = us.find('span', 'phon').text
-        us_media = us.find('div')['data-src-mp3']
+        if kwargs['dict_type'] == 'oxford':
+            uk = soup.find_all('div', kwargs['uk_phon_class'])[0]
+            uk_phonetic = uk.find('span', 'phon').text
+            uk_media = uk.find('div')['data-src-mp3']
+
+            us = soup.find_all('div', kwargs['us_phon_class'])[0]
+            us_phonetic = us.find('span', 'phon').text
+            us_media = us.find('div')['data-src-mp3']
+        # elif kwargs['dict_type'] == 'cambridge':
+        else:
+            uk = soup.find_all(class_=kwargs['uk_phon_class'])[0]
+            uk_phonetic = uk.find(class_=kwargs['phon_text']).text
+            uk_media = uk.find('source', type=kwargs['phon_media'])['src']
+            us = soup.find_all(class_=kwargs['us_phon_class'])[0]
+            us_phonetic = us.find(class_=kwargs['phon_text']).text
+            us_media = us.find('source', type=kwargs['phon_media'])['src']
         result['phonetics'] = {
             'uk': {
                 'phon': uk_phonetic,
@@ -114,10 +130,11 @@ async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dic
 async def crawl_resource(session: aiohttp.ClientSession, word: str) -> dict or None:
     """Get the web page of the word and parse it."""
     result = None
-    for dictionary in DICT_PROFILES:
-        result = await parse_page(session, word, **DICT_PROFILES[dictionary])
-        if result is not None:
-            break
+    # for dictionary in DICT_PROFILES:
+    #     result = await parse_page(session, word, **DICT_PROFILES[dictionary])
+    #     if result is not None:
+    #         break
+    result = await parse_page(session, word, **DICT_PROFILES['cambridge'])
     return result
 
 
