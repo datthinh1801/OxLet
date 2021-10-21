@@ -5,6 +5,10 @@ from aiohttp import ClientSession
 from utils import crawl_resource
 
 
+async def send_to_anki(session: ClientSession, data: dict):
+    return await session.post(url='http://localhost:8765', data=json.dumps(data).encode('utf-8'))
+
+
 async def create_new_note(session: ClientSession, word: str):
     result = await crawl_resource(session, word)
     data = json.dumps(result).encode('utf-8')
@@ -14,15 +18,49 @@ async def create_new_note(session: ClientSession, word: str):
 async def check_model_exist(session: ClientSession) -> bool:
     model_name = 'English (by datthinh1801)'
     modelnames_request = {"action": "modelNames", "version": 6}
-    resp = await session.post(url='http://localhost:8765', data=json.dumps(modelnames_request).encode('utf-8'))
+    resp = await send_to_anki(session, modelnames_request)
     resp_json = json.loads(await resp.text())
     return resp_json['error'] is None and 'English (by datthinh1801)' in resp_json['result']
+
+
+async def create_new_model(session: ClientSession):
+    if await check_model_exist(session):
+        return None
+
+    new_model = {
+        "action": "createModel",
+        "version": 6,
+        "params": {
+            "modelName": 'English (by datthinh1801)',
+            "inOrderFields": ["Word", "Phonetic", "Word form", "Definition"],
+            "isCloze": False,
+            "cardTemplates": [
+                {
+                    "Name": "Basic type",
+                    "Front": "{{Word}}<br>{{Phonetic}}",
+                    "Back": "{{Word}}<br>{{Phonetic}}<hr id=answer>{{Definition}}"
+                },
+                {
+                    "Name": "Basic reverse type",
+                    "Front": "{{Definition}}",
+                    "Back": "{{Definition}}<hr id=answer>{{Word}}<br>{{Phonetic}}"
+                },
+                {
+                    "Name": "Listening type",
+                    "Front": "{{Phonetic}}",
+                    "Back": "{{Word}}<br>{{Phonetic}}<hr id=answer>{{Definition}}"
+                }
+            ]
+        }
+    }
+    # Sometimes, a ConnectionResetError occurs
+    return send_to_anki(session, new_model)
 
 
 async def main(word):
     async with ClientSession(headers={"User-Agent": "Chrome"}) as session:
         # await create_new_note(session, word)
-        print(await check_model_exist(session))
+        print(await create_new_model(session))
 
 
 if __name__ == '__main__':
