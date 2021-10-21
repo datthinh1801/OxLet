@@ -4,6 +4,7 @@ import os
 import sys
 
 import utils
+import anki
 
 
 def create_parser():
@@ -32,6 +33,13 @@ def create_parser():
         help="the filename to write the results to (e.g. output.txt)",
         type=str,
         dest="outfile",
+    )
+
+    parser.add_argument(
+        "--anki",
+        help="add new vocabularies to Anki automatically",
+        action='store_true',
+        dest="anki",
     )
 
     return parser.parse_args()
@@ -64,9 +72,15 @@ if __name__ == "__main__":
     words = get_word_list(args)
     words = utils.preprocess_words(words)
 
-    results = asyncio.run(utils.run(words))
-    if args.outfile:
-        with open(args.outfile, "wb") as outfile:
-            outfile.write(results.encode())
+    if args.anki:
+        try:
+            asyncio.run(anki.run(words))
+        except OSError:
+            print("[-] Make sure Anki is running and AnkiConnect plugin is installed!")
     else:
-        print(results)
+        results = asyncio.run(utils.run(words))
+        if args.outfile:
+            with open(args.outfile, "wb") as outfile:
+                outfile.write(results.encode())
+        else:
+            print(results)

@@ -87,14 +87,18 @@ async def create_new_model(session: ClientSession):
         }
     }
     # Sometimes, a ConnectionResetError occurs
-    return send_to_anki(session, new_model)
+    return await send_to_anki(session, new_model)
 
 
-async def main(word):
+async def run(wordlist: list):
     async with ClientSession(headers={"User-Agent": "Chrome"}) as session:
-        # await create_new_note(session, word)
-        print((await create_new_note(session, word)).status)
+        tasks = []
+        await create_new_model(session)
+        for word in wordlist:
+            tasks.append(create_new_note(session, word))
+        await asyncio.gather(*tasks)
+    print('[+] Done.')
 
 
 if __name__ == '__main__':
-    asyncio.run(main('imperceptible'))
+    asyncio.run(run(['imperceptible', 'susceptible']))
