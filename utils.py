@@ -68,44 +68,44 @@ async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dic
         return None
 
     # print(soup.find_all(class_='us')[0].find('source', type='audio/mpeg')['src'])
+    result['phonetics'] = {
+        'uk': {
+            'phon': '',
+            'media': '',
+        },
+        'us': {
+            'phon': '',
+            'media': '',
+        }
+    }
     # extract phonetic
     try:
         # extract NA phonetic
         if kwargs['dict_type'] == 'oxford':
             uk = soup.find_all('div', kwargs['uk_phon_class'])[0]
-            uk_phonetic = uk.find('span', 'phon').text
-            uk_media = uk.find('div')['data-src-mp3']
+            result['phonetics']['uk']['phon'] = uk.find('span', 'phon').text
+            result['phonetics']['uk']['media'] = uk.find('div')['data-src-mp3']
 
             us = soup.find_all('div', kwargs['us_phon_class'])[0]
-            us_phonetic = us.find('span', 'phon').text
-            us_media = us.find('div')['data-src-mp3']
+            result['phonetics']['us']['phon'] = us.find('span', 'phon').text
+            result['phonetics']['us']['media'] = us.find('div')['data-src-mp3']
         # elif kwargs['dict_type'] == 'cambridge':
         else:
             uk = soup.find_all(class_=kwargs['uk_phon_class'])[0]
-            uk_phonetic = uk.find(class_=kwargs['phon_text']).text
-            uk_media = uk.find('source', type=kwargs['phon_media'])['src']
+            result['phonetics']['uk']['phon'] = uk.find(class_=kwargs['phon_text']).text
+            result['phonetics']['uk']['media'] = uk.find('source', type=kwargs['phon_media'])['src']
             us = soup.find_all(class_=kwargs['us_phon_class'])[0]
-            us_phonetic = us.find(class_=kwargs['phon_text']).text
-            us_media = us.find('source', type=kwargs['phon_media'])['src']
-        result['phonetics'] = {
-            'uk': {
-                'phon': uk_phonetic,
-                'media': uk_media,
-            },
-            'us': {
-                'phon': us_phonetic,
-                'media': us_media,
-            }
-        }
-    except Exception as e:
-        print(e)
+            result['phonetics']['us']['phon'] = us.find(class_=kwargs['phon_text']).text
+            result['phonetics']['us']['media'] = us.find('source', type=kwargs['phon_media'])['src']
+
+    except:
         pass
 
     # extract word form
     try:
         result['word_form'] = soup.find(class_=kwargs['wf_class']).text
     except:
-        pass
+        result['word_form'] = ''
 
     sense = soup.find(class_=kwargs['sense_class'])
     # extract definition
@@ -122,7 +122,7 @@ async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dic
     try:
         result['example'] = sense.find(class_=kwargs['ex_class']).text
     except:
-        pass
+        result['example'] = ''
 
     return result
 
@@ -130,11 +130,10 @@ async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dic
 async def crawl_resource(session: aiohttp.ClientSession, word: str) -> dict or None:
     """Get the web page of the word and parse it."""
     result = None
-    # for dictionary in DICT_PROFILES:
-    #     result = await parse_page(session, word, **DICT_PROFILES[dictionary])
-    #     if result is not None:
-    #         break
-    result = await parse_page(session, word, **DICT_PROFILES['cambridge'])
+    for dictionary in DICT_PROFILES:
+        result = await parse_page(session, word, **DICT_PROFILES[dictionary])
+        if result is not None:
+            break
     return result
 
 
@@ -160,7 +159,6 @@ async def run(wordlist: list, return_str=True):
         for word in wordlist:
             tasks.append(crawl_resource(session=session, word=word))
         results = await asyncio.gather(*tasks)
-    # return '\n\n'.join(results)
     if return_str:
         return '\n\n'.join(list(map(parse_word_dict, results)))
     return results
