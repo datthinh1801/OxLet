@@ -24,7 +24,8 @@ def create_new_note(session: requests.Session, word: str):
                     "Word": result['word'],
                     "Phonetic": result['phonetics']['us']['phon'],
                     "Word form": result['word_form'],
-                    "Definition": result['definition']
+                    "Definition": result['definition'],
+                    "Example": result['example']
                 },
                 'options': {
                     "allowDuplicate": False,
@@ -159,7 +160,7 @@ def update_model_template(session: requests.Session):
 
 def run(wordlist: list):
     with requests.Session() as session:
-        print(check_model_exist(session))
+        print(send_to_anki(session, {'action': 'deckNames', 'version': 6}))
     print('[+] Done.')
 
 
