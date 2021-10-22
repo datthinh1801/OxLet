@@ -58,7 +58,7 @@ async def check_model_exist(session: ClientSession) -> bool:
 
 async def create_new_model(session: ClientSession):
     if await check_model_exist(session):
-        await update_model_template(session)
+        # await update_model_template(session)
         return None
 
     new_model = {
@@ -76,7 +76,7 @@ async def create_new_model(session: ClientSession):
                 },
                 {
                     "Name": "Basic reverse type",
-                    "Front": "{{Definition}}",
+                    "Front": "{{Word form}}<br>{{Definition}}",
                     "Back": "{{Word form}}<br>{{Definition}}<hr id=answer>{{Word}}<br>{{Phonetic}}"
                 },
                 {
@@ -104,7 +104,7 @@ async def update_model_template(session: ClientSession):
                         "Back": "{{Word}}<br>{{Phonetic}}<hr id=answer>{{Word form}}<br>{{Definition}}"
                     },
                     "Basic reverse type": {
-                        "Front": "{{Definition}}",
+                        "Front": "{{Word form}}<br>{{Definition}}",
                         "Back": "{{Word form}}<br>{{Definition}}<hr id=answer>{{Word}}<br>{{Phonetic}}"
                     },
                     "Listening type": {
@@ -115,7 +115,8 @@ async def update_model_template(session: ClientSession):
             }
         }
     }
-    return await send_to_anki(session, new_model_template)
+    resp = await send_to_anki(session, new_model_template)
+    print(await resp.text())
 
 
 async def run(wordlist: list):
