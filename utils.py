@@ -1,8 +1,5 @@
-import json
-import asyncio
-
-import aiohttp
-from aiohttp import ClientSession
+import requests
+from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup
 
 BASE_URL = {"oxford": "https://www.oxfordlearnersdictionaries.com/definition/english/",
@@ -46,17 +43,16 @@ def preprocess_words(words):
     return list(map(lambda word: "-".join(word.split(" ")), words))
 
 
-async def fetch_html(url: str, session: ClientSession):
+def fetch_html(url: str, session: requests.Session):
     """Fetch html from a given url."""
-    resp = await session.get(url=url)
-    html = await resp.text()
-    return html
+    resp = session.get(url=url, headers={'User-Agent': 'Chrome'})
+    return resp.text
 
 
-async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dict:
+def parse_page(session: requests.Session, word: str, **kwargs) -> dict:
     """Crawl the source code and parse elements via given classes."""
     url = BASE_URL[kwargs['dict_type']] + word
-    page = await fetch_html(url=url, session=session)
+    page = fetch_html(url=url, session=session)
     soup = BeautifulSoup(page, "html.parser")
 
     result = dict()
@@ -129,11 +125,11 @@ async def parse_page(session: aiohttp.ClientSession, word: str, **kwargs) -> dic
     return result
 
 
-async def crawl_resource(session: aiohttp.ClientSession, word: str) -> dict or None:
+def crawl_resource(session: requests.Session, word: str) -> dict or None:
     """Get the web page of the word and parse it."""
     result = None
     for dictionary in DICT_PROFILES:
-        result = await parse_page(session, word, **DICT_PROFILES[dictionary])
+        result = parse_page(session, word, **DICT_PROFILES[dictionary])
         if result is not None:
             break
     return result
@@ -154,13 +150,21 @@ def parse_word_dict(data) -> str:
     return result
 
 
-async def run(wordlist: list, return_str=True):
+def run(wordlist: list, return_str=True):
     """Create a vocabulary list from the specified wordlist."""
-    async with aiohttp.ClientSession(headers={"User-Agent": "Chrome"}) as session:
-        tasks = []
-        for word in wordlist:
-            tasks.append(crawl_resource(session=session, word=word))
-        results = await asyncio.gather(*tasks)
-    if return_str:
-        return '\n\n'.join(list(map(parse_word_dict, results)))
-    return results
+    with requests.Session() as session:
+        results = []
+        futures = []
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            for word in wordlist:
+                futures.append(executor.submit(crawl_resource, session, word))
+            for f in futures:
+                results.append(f.result())
+        print(results)
+    # if return_str:
+    #     return '\n\n'.join(list(map(parse_word_dict, results)))
+    # return results
+
+
+if __name__ == '__main__':
+    run(['imperceptible', 'susceptible'])
