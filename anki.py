@@ -1,16 +1,15 @@
-import asyncio
+import requests
 import json
-from aiohttp import ClientSession
 
 from utils import crawl_resource
 
 
-async def send_to_anki(session: ClientSession, data: dict):
-    return await session.post(url='http://localhost:8765', data=json.dumps(data).encode('utf-8'))
+def send_to_anki(session: requests.Session, data: dict):
+    return session.post('http://localhost:8765', data=data)
 
 
-async def create_new_note(session: ClientSession, word: str):
-    result = await crawl_resource(session, word)
+def create_new_note(session: requests.Session, word: str):
+    result = crawl_resource(session, word)
     if result is None:
         return None
 
@@ -45,20 +44,18 @@ async def create_new_note(session: ClientSession, word: str):
             }
         }
     }
-    return await send_to_anki(session, new_card)
+    return send_to_anki(session, new_card)
 
 
-async def check_model_exist(session: ClientSession) -> bool:
-    model_name = 'English (by datthinh1801)'
+def check_model_exist(session: requests.Session) -> bool:
     modelnames_request = {"action": "modelNames", "version": 6}
-    resp = await send_to_anki(session, modelnames_request)
-    resp_json = json.loads(await resp.text())
+    resp = send_to_anki(session, modelnames_request)
+    resp_json = json.loads(resp.text)
     return resp_json['error'] is None and 'English (by datthinh1801)' in resp_json['result']
 
 
-async def create_new_model(session: ClientSession):
-    if await check_model_exist(session):
-        # await update_model_template(session)
+def create_new_model(session: requests.Session):
+    if check_model_exist(session):
         return None
 
     new_model = {
@@ -66,32 +63,53 @@ async def create_new_model(session: ClientSession):
         "version": 6,
         "params": {
             "modelName": 'English (by datthinh1801)',
-            "inOrderFields": ["Word", "Phonetic", "Word form", "Definition"],
+            "inOrderFields": ["Word", "Phonetic", "Word form", "Definition", "Example"],
             "isCloze": False,
             "cardTemplates": [
                 {
                     "Name": "Basic type",
                     "Front": "{{Word}}<br>{{Phonetic}}",
-                    "Back": "{{Word}}<br>{{Phonetic}}<hr id=answer>{{Word form}}<br>{{Definition}}"
+                    "Back": """{{Word}}
+                                <br>
+                                {{Phonetic}}
+                                <hr id=answer>
+                                {{Word form}}
+                                <br>
+                                {{Definition}}
+                                <br>
+                                e.g. {{Example}}"""
                 },
                 {
                     "Name": "Basic reverse type",
                     "Front": "{{Word form}}<br>{{Definition}}",
-                    "Back": "{{Word form}}<br>{{Definition}}<hr id=answer>{{Word}}<br>{{Phonetic}}"
+                    "Back": """{{Word form}}
+                                <br>
+                                {{Definition}}
+                                <hr id=answer>
+                                {{Word}}
+                                <br>
+                                {{Phonetic}}"""
                 },
                 {
                     "Name": "Listening type",
                     "Front": "{{Phonetic}}",
-                    "Back": "{{Word}}<br>{{Phonetic}}<hr id=answer>{{Word form}}<br>{{Definition}}"
+                    "Back": """{{Word}}
+                                <br>
+                                {{Phonetic}}
+                                <hr id=answer>
+                                {{Word form}}
+                                <br>
+                                {{Definition}}
+                                <br>
+                                e.g. {{Example}}"""
                 }
             ]
         }
     }
-    # Sometimes, a ConnectionResetError occurs
-    return await send_to_anki(session, new_model)
+    return send_to_anki(session, new_model)
 
 
-async def update_model_template(session: ClientSession):
+def update_model_template(session: requests.Session):
     new_model_template = {
         'action': 'updateModelTemplates',
         'version': 6,
@@ -101,33 +119,49 @@ async def update_model_template(session: ClientSession):
                 'templates': {
                     "Basic type": {
                         "Front": "{{Word}}<br>{{Phonetic}}",
-                        "Back": "{{Word}}<br>{{Phonetic}}<hr id=answer>{{Word form}}<br>{{Definition}}"
+                        "Back": """{{Word}}
+                                <br>
+                                {{Phonetic}}
+                                <hr id=answer>
+                                {{Word form}}
+                                <br>
+                                {{Definition}}
+                                <br>
+                                e.g. {{Example}}"""
                     },
                     "Basic reverse type": {
                         "Front": "{{Word form}}<br>{{Definition}}",
-                        "Back": "{{Word form}}<br>{{Definition}}<hr id=answer>{{Word}}<br>{{Phonetic}}"
+                        "Back": """{{Word form}}
+                                    <br>
+                                    {{Definition}}
+                                    <hr id=answer>
+                                    {{Word}}
+                                    <br>
+                                    {{Phonetic}}"""
                     },
                     "Listening type": {
                         "Front": "{{Phonetic}}",
-                        "Back": "{{Word}}<br>{{Phonetic}}<hr id=answer>{{Word form}}<br>{{Definition}}"
+                        "Back": """{{Word}}
+                                    <br>
+                                    {{Phonetic}}
+                                    <hr id=answer>
+                                    {{Word form}}
+                                    <br>
+                                    {{Definition}}"""
                     }
                 }
             }
         }
     }
-    resp = await send_to_anki(session, new_model_template)
-    print(await resp.text())
+    resp = send_to_anki(session, new_model_template)
+    print(resp.text)
 
 
-async def run(wordlist: list):
-    async with ClientSession(headers={"User-Agent": "Chrome"}) as session:
-        tasks = []
-        await create_new_model(session)
-        for word in wordlist:
-            tasks.append(create_new_note(session, word))
-        await asyncio.gather(*tasks)
+def run(wordlist: list):
+    with requests.Session() as session:
+        print(check_model_exist(session))
     print('[+] Done.')
 
 
 if __name__ == '__main__':
-    asyncio.run(run(['imperceptible', 'susceptible']))
+    run(['imperceptible'])

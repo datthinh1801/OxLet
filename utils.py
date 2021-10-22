@@ -152,18 +152,17 @@ def parse_word_dict(data) -> str:
 
 def run(wordlist: list, return_str=True):
     """Create a vocabulary list from the specified wordlist."""
+    results = []
     with requests.Session() as session:
-        results = []
         futures = []
         with ThreadPoolExecutor(max_workers=10) as executor:
             for word in wordlist:
                 futures.append(executor.submit(crawl_resource, session, word))
             for f in futures:
                 results.append(f.result())
-        print(results)
-    # if return_str:
-    #     return '\n\n'.join(list(map(parse_word_dict, results)))
-    # return results
+    if return_str:
+        return '\n\n'.join(list(map(parse_word_dict, results)))
+    return results
 
 
 if __name__ == '__main__':

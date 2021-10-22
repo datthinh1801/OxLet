@@ -49,9 +49,9 @@ def get_word_list(args) -> list:
     """Get words from a wordlist."""
     if args.infile:
         with open(args.infile, "r") as wordlist:
-            words = list(map(str.strip, wordlist.readlines()))
+            wordlist = list(map(str.strip, wordlist.readlines()))
     elif args.words:
-        words = list(map(str.strip, args.words.split(",")))
+        wordlist = list(map(str.strip, args.words.split(",")))
     else:
         print(
             "Invalid arguments. Please run the following command for a how-to instruction."
@@ -59,7 +59,7 @@ def get_word_list(args) -> list:
         print(f"python3 {os.path.basename(__file__)} -h")
         sys.exit(1)
 
-    return words
+    return wordlist
 
 
 if __name__ == "__main__":
