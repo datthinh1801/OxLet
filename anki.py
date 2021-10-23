@@ -1,5 +1,6 @@
 import requests
 import json
+from concurrent.futures import ThreadPoolExecutor
 
 from utils import crawl_resource
 
@@ -147,7 +148,14 @@ def update_model_template(session: requests.Session):
 
 def run(wordlist: list):
     with requests.Session() as session:
-        print(create_new_model(session).text)
+        create_new_model(session)
+        results = []
+        futures = []
+        for word in wordlist:
+            with ThreadPoolExecutor(max_workers=10) as executor:
+                futures.append(executor.submit(create_new_note, session, word))
+        for future in futures:
+            results.append(future.result())
     print('[+] Done.')
 
 

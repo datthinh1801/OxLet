@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     if args.anki:
         try:
-            asyncio.run(anki.run(words))
+            anki.run(words)
         except OSError:
             print("[-] Make sure Anki is running and AnkiConnect plugin is installed!")
     else:
