@@ -3,9 +3,73 @@ import json
 
 from utils import crawl_resource
 
+MODEL_NAME = 'English (by datthinh1801)'
+CARD_TEMPLATES = {
+    "Basic type": {
+        "Front": """{{Word}}
+                    <br>
+                    {{#Phoentic}}
+                    {{Phonetic}}
+                    {{/Phonetic}}""",
+        "Back": """{{Word}}
+                    {{#Phoentic}}
+                    <br>
+                    {{Phonetic}}
+                    {{/Phonetic}}
+                    <hr id=answer>
+                    {{#Word form}}
+                    {{Word form}}
+                    <br>
+                    {{/Word form}}
+                    {{Definition}}
+                    {{#Example}}
+                    <br>
+                    e.g. {{Example}}
+                    {{/Example}}"""
+    },
+    "Basic reverse type": {
+        "Front": """{{#Word form}}
+                    {{Word form}}
+                    <br>
+                    {{/Word form}}
+                    {{Definition}}""",
+        "Back": """{{#Word form}}
+                    {{Word form}}
+                    <br>
+                    {{/Word form}}
+                    {{Definition}}
+                    <hr id=answer>
+                    {{Word}}
+                    {{#Phonetic}}
+                    <br>
+                    {{Phonetic}}
+                    {{/Phonetic}}
+                    {{#Example}}
+                    <br>
+                    e.g. {{Example}}
+                    {{/Example}}"""
+    },
+    "Listening type": {
+        "Front": "{{Phonetic}}",
+        "Back": """{{Word}}
+                    <br>
+                    {{Phonetic}}
+                    <hr id=answer>
+                    {{#Word form}}
+                    {{Word form}}
+                    <br>
+                    {{/Word form}}
+                    {{Definition}}
+                    {{#Example}}
+                    <br>
+                    e.g. {{Example}}
+                    {{/Example}}"""
+    }
+}
+
 
 def send_to_anki(session: requests.Session, data: dict):
-    return session.post('http://localhost:8765', data=data)
+    return session.post('http://localhost:8765', data=json.dumps(data).encode('utf-8'))
 
 
 def create_new_note(session: requests.Session, word: str):
@@ -19,7 +83,7 @@ def create_new_note(session: requests.Session, word: str):
         "params": {
             "note": {
                 "deckName": "Default",
-                "modelName": "English (by datthinh1801)",
+                "modelName": MODEL_NAME,
                 "fields": {
                     "Word": result['word'],
                     "Phonetic": result['phonetics']['us']['phon'],
@@ -52,57 +116,32 @@ def check_model_exist(session: requests.Session) -> bool:
     modelnames_request = {"action": "modelNames", "version": 6}
     resp = send_to_anki(session, modelnames_request)
     resp_json = json.loads(resp.text)
-    return resp_json['error'] is None and 'English (by datthinh1801)' in resp_json['result']
+    return resp_json['error'] is None and MODEL_NAME in resp_json['result']
 
 
 def create_new_model(session: requests.Session):
-    if check_model_exist(session):
-        return None
-
     new_model = {
         "action": "createModel",
         "version": 6,
         "params": {
-            "modelName": 'English (by datthinh1801)',
+            "modelName": MODEL_NAME,
             "inOrderFields": ["Word", "Phonetic", "Word form", "Definition", "Example"],
             "isCloze": False,
             "cardTemplates": [
                 {
                     "Name": "Basic type",
-                    "Front": "{{Word}}<br>{{Phonetic}}",
-                    "Back": """{{Word}}
-                                <br>
-                                {{Phonetic}}
-                                <hr id=answer>
-                                {{Word form}}
-                                <br>
-                                {{Definition}}
-                                <br>
-                                e.g. {{Example}}"""
+                    "Front": CARD_TEMPLATES['Basic type']['Front'],
+                    "Back": CARD_TEMPLATES['Basic type']['Back'],
                 },
                 {
                     "Name": "Basic reverse type",
-                    "Front": "{{Word form}}<br>{{Definition}}",
-                    "Back": """{{Word form}}
-                                <br>
-                                {{Definition}}
-                                <hr id=answer>
-                                {{Word}}
-                                <br>
-                                {{Phonetic}}"""
+                    "Front": CARD_TEMPLATES['Basic reverse type']['Front'],
+                    "Back": CARD_TEMPLATES['Basic reverse type']['Back'],
                 },
                 {
                     "Name": "Listening type",
-                    "Front": "{{Phonetic}}",
-                    "Back": """{{Word}}
-                                <br>
-                                {{Phonetic}}
-                                <hr id=answer>
-                                {{Word form}}
-                                <br>
-                                {{Definition}}
-                                <br>
-                                e.g. {{Example}}"""
+                    "Front": CARD_TEMPLATES['Listening type']['Front'],
+                    "Back": CARD_TEMPLATES['Listening type']['Back']
                 }
             ]
         }
@@ -116,51 +155,17 @@ def update_model_template(session: requests.Session):
         'version': 6,
         'params': {
             'model': {
-                'name': 'English (by datthinh1801)',
-                'templates': {
-                    "Basic type": {
-                        "Front": "{{Word}}<br>{{Phonetic}}",
-                        "Back": """{{Word}}
-                                <br>
-                                {{Phonetic}}
-                                <hr id=answer>
-                                {{Word form}}
-                                <br>
-                                {{Definition}}
-                                <br>
-                                e.g. {{Example}}"""
-                    },
-                    "Basic reverse type": {
-                        "Front": "{{Word form}}<br>{{Definition}}",
-                        "Back": """{{Word form}}
-                                    <br>
-                                    {{Definition}}
-                                    <hr id=answer>
-                                    {{Word}}
-                                    <br>
-                                    {{Phonetic}}"""
-                    },
-                    "Listening type": {
-                        "Front": "{{Phonetic}}",
-                        "Back": """{{Word}}
-                                    <br>
-                                    {{Phonetic}}
-                                    <hr id=answer>
-                                    {{Word form}}
-                                    <br>
-                                    {{Definition}}"""
-                    }
-                }
+                'name': MODEL_NAME,
+                'templates': CARD_TEMPLATES,
             }
         }
     }
-    resp = send_to_anki(session, new_model_template)
-    print(resp.text)
+    return send_to_anki(session, new_model_template)
 
 
 def run(wordlist: list):
     with requests.Session() as session:
-        print(send_to_anki(session, {'action': 'deckNames', 'version': 6}))
+        print(create_new_model(session).text)
     print('[+] Done.')
 
 
