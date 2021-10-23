@@ -154,8 +154,8 @@ def run(wordlist: list):
         for word in wordlist:
             with ThreadPoolExecutor(max_workers=10) as executor:
                 futures.append(executor.submit(create_new_note, session, word))
-        for future in futures:
-            results.append(future.result())
+            for future in futures:
+                results.append(future.result())
     print('[+] Done.')
 
 

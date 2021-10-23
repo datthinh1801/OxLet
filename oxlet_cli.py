@@ -1,7 +1,6 @@
 import argparse
-import asyncio
-import os
 import sys
+import os
 
 import utils
 import anki
@@ -63,11 +62,6 @@ def get_word_list(args) -> list:
 
 
 if __name__ == "__main__":
-    # fix Windows-specific exception:
-    # RuntimeError: Event loop is closed.
-    if sys.platform.startswith('win'):
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
     args = create_parser()
     words = get_word_list(args)
     words = utils.preprocess_words(words)
@@ -78,7 +72,7 @@ if __name__ == "__main__":
         except OSError:
             print("[-] Make sure Anki is running and AnkiConnect plugin is installed!")
     else:
-        results = asyncio.run(utils.run(words))
+        results = utils.run(words)
         if args.outfile:
             with open(args.outfile, "wb") as outfile:
                 outfile.write(results.encode())

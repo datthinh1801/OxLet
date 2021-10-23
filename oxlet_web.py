@@ -1,6 +1,3 @@
-import asyncio
-import sys
-
 from flask import Flask, render_template, request
 
 import utils
@@ -20,7 +17,7 @@ def index():
 
     # handle potential errors
     try:
-        result = asyncio.run(utils.run(words))
+        result = utils.run(words)
         return render_template("index.html", new_words=new_words, result=result)
     except:
         return render_template("index.html")
@@ -29,6 +26,4 @@ def index():
 if __name__ == "__main__":
     # fix Windows-specific exception:
     # RuntimeError: Event loop is closed.
-    if sys.platform.startswith('win'):
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     app.run(debug=True)

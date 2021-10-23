@@ -49,7 +49,7 @@ def fetch_html(url: str, session: requests.Session):
     return resp.text
 
 
-def parse_page(session: requests.Session, word: str, **kwargs) -> dict:
+def parse_page(session: requests.Session, word: str, **kwargs) -> dict or None:
     """Crawl the source code and parse elements via given classes."""
     url = BASE_URL[kwargs['dict_type']] + word
     page = fetch_html(url=url, session=session)
@@ -106,6 +106,7 @@ def parse_page(session: requests.Session, word: str, **kwargs) -> dict:
         result['word_form'] = ''
 
     sense = soup.find(class_=kwargs['sense_class'])
+
     # extract definition
     try:
         definition = sense.find(class_=kwargs['def_class'])
@@ -144,9 +145,10 @@ def parse_word_dict(data) -> str:
         result += '\n' + data['phonetics']['us']['phon']
     result += '|'
     if data['word_form']:
-        result += f"({data['word_form']})"
+        result += f"({data['word_form']}) "
+    result += data['definition']
     if data['example']:
-        result += '\n' + data['example']
+        result += '\ne.g. ' + data['example']
     return result
 
 
