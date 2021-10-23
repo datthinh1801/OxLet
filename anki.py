@@ -8,46 +8,32 @@ CARD_TEMPLATES = {
     "Basic type": {
         "Front": """{{Word}}
                     <br>
-                    {{#Phoentic}}
-                    {{Phonetic}}
-                    {{/Phonetic}}""",
+                    {{Phonetic}}""",
         "Back": """{{Word}}
-                    {{#Phoentic}}
                     <br>
                     {{Phonetic}}
-                    {{/Phonetic}}
                     <hr id=answer>
-                    {{#Word form}}
                     {{Word form}}
                     <br>
-                    {{/Word form}}
                     {{Definition}}
-                    {{#Example}}
                     <br>
-                    e.g. {{Example}}
-                    {{/Example}}"""
+                    e.g. {{Example}}""",
     },
     "Basic reverse type": {
-        "Front": """{{#Word form}}
+        "Front": """
                     {{Word form}}
                     <br>
-                    {{/Word form}}
                     {{Definition}}""",
-        "Back": """{{#Word form}}
+        "Back": """
                     {{Word form}}
                     <br>
-                    {{/Word form}}
                     {{Definition}}
                     <hr id=answer>
                     {{Word}}
-                    {{#Phonetic}}
                     <br>
                     {{Phonetic}}
-                    {{/Phonetic}}
-                    {{#Example}}
                     <br>
-                    e.g. {{Example}}
-                    {{/Example}}"""
+                    e.g. {{Example}}""",
     },
     "Listening type": {
         "Front": "{{Phonetic}}",
@@ -55,15 +41,11 @@ CARD_TEMPLATES = {
                     <br>
                     {{Phonetic}}
                     <hr id=answer>
-                    {{#Word form}}
                     {{Word form}}
                     <br>
-                    {{/Word form}}
                     {{Definition}}
-                    {{#Example}}
                     <br>
-                    e.g. {{Example}}
-                    {{/Example}}"""
+                    e.g. {{Example}}""",
     }
 }
 
