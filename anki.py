@@ -14,7 +14,9 @@ CARD_TEMPLATES = {
                     <br>
                     {{Phonetic}}
                     <hr id=answer>
-                    {{Word form}}
+                    {{#Word form}}
+                    ({{Word form}})
+                    {{/Word form}}
                     <br>
                     {{Definition}}
                     <br>
@@ -22,11 +24,15 @@ CARD_TEMPLATES = {
     },
     "Basic reverse type": {
         "Front": """
-                    {{Word form}}
+                    {{#Word form}}
+                    ({{Word form}})
+                    {{/Word form}}
                     <br>
                     {{Definition}}""",
         "Back": """
-                    {{Word form}}
+                    {{#Word form}}
+                    ({{Word form}})
+                    {{/Word form}}
                     <br>
                     {{Definition}}
                     <hr id=answer>
@@ -42,7 +48,9 @@ CARD_TEMPLATES = {
                     <br>
                     {{Phonetic}}
                     <hr id=answer>
-                    {{Word form}}
+                    {{#Word form}}
+                    ({{Word form}})
+                    {{/Word form}}
                     <br>
                     {{Definition}}
                     <br>
