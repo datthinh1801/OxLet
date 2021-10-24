@@ -19,8 +19,10 @@ CARD_TEMPLATES = {
                     {{/Word form}}
                     <br>
                     {{Definition}}
+                    {{#Example}}
                     <br>
-                    e.g. {{Example}}""",
+                    e.g. {{Example}}
+                    {{/Example}}""",
     },
     "Basic reverse type": {
         "Front": """
@@ -39,8 +41,10 @@ CARD_TEMPLATES = {
                     {{Word}}
                     <br>
                     {{Phonetic}}
+                    {{#Example}}
                     <br>
-                    e.g. {{Example}}""",
+                    e.g. {{Example}}
+                    {{/Example}}""",
     },
     "Listening type": {
         "Front": "{{Phonetic}}",
@@ -53,8 +57,10 @@ CARD_TEMPLATES = {
                     {{/Word form}}
                     <br>
                     {{Definition}}
+                    {{#Example}}
                     <br>
-                    e.g. {{Example}}""",
+                    e.g. {{Example}}
+                    {{/Example}}""",
     }
 }
 
